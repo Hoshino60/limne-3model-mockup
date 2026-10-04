@@ -11,7 +11,10 @@
 }
 * { box-sizing: border-box; }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
-body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif; font-size: 15px; line-height: 1.7; -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif; font-size: 15px; line-height: 1.7; -webkit-text-size-adjust: 100%; word-break: auto-phrase; overflow-wrap: break-word; text-wrap: pretty; }
+.nw { display: inline-block; } /* 折り返したくないかたまり。境目に句読点・括弧が来ない所だけ（inline-block の境目では禁則が効かない） */
+.nb { white-space: nowrap; } /* 折り返さないだけのかたまり（前後の禁則は効く）。「（オリジナル）」「＋保証料の金額」「TOP 25N」など */
+a[data-anchor="guarantee-note"] { white-space: nowrap; }
 a { color: var(--ink); }
 mark.pending { background: var(--pending); color: var(--ink); padding: 0 .25em; border-radius: 2px; }
 body.hide-pending mark.pending { background: none; padding: 0; }
@@ -54,6 +57,10 @@ h2[tabindex], h3[tabindex] { scroll-margin-top: 16px; }
   #list-cards .card { display: grid; grid-template-rows: subgrid; grid-row: span 12; row-gap: 0; }
   #top-cards .card { display: grid; grid-template-rows: subgrid; grid-row: span 7; row-gap: 0; }
   .card .actions2 { align-self: end; }
+  /* 構造図の枠を行の高さ（3枚でいちばん高い図）まで伸ばし、図の下の説明の位置をそろえる */
+  .card .diagram { display: flex; flex-direction: column; }
+  .card .diagram .dgframe { flex: 1 1 auto; }
+  .card .dgcap { min-height: 3.2em; } /* 説明を2行分の高さにそろえ、図の枠の下端を3枚でそろえる */
 }
 /* 1列のまま幅が広い700〜899pxでは、写真と図が大きくなりすぎないようにする */
 @media (min-width: 700px) and (max-width: 899px) { .card > .photo { aspect-ratio: auto; height: 300px; } }
@@ -66,7 +73,7 @@ h2[tabindex], h3[tabindex] { scroll-margin-top: 16px; }
 .card .flags:empty { margin-top: 0; }
 .flag { font-size: 12px; line-height: 1.6; padding: 1px 8px; border-radius: 2px; }
 .flag.rec, .flag.na { background: var(--ink); color: #fff; }
-.flag.tag { border: 1px solid var(--ink); background: #fff; }
+.flag.ftag { border: 1px solid var(--ink); background: #fff; }
 .diagram { margin-top: 12px; }
 /* 分解図：図の縦横の比率のまま横幅いっぱいに出す。高さの上限は --dgmax（縦長の図は上限の高さで止まる） */
 .dgframe { --dgmax: 420px; display: flex; align-items: center; justify-content: center; background: #fff; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; padding: 6px; }
@@ -86,9 +93,10 @@ h2[tabindex], h3[tabindex] { scroll-margin-top: 16px; }
 .dgcrop img { display: block; max-width: none; height: auto; }
 .dgpending { min-height: 220px; border-style: dashed; color: var(--muted); font-size: 14px; background: var(--na-bg); }
 .card .catch { font-size: 16px; font-weight: 600; margin: 10px 0 0; }
-.card .feel { display: inline-block; font-size: 13px; background: var(--panel); padding: 2px 10px; border-radius: 14px; margin-top: 6px; }
+.card .feel { display: inline-block; font-size: 13px; background: var(--panel); padding: 4px 12px; border-radius: 10px; margin-top: 6px; line-height: 1.5; }
+.card .feel .fl { display: block; font-size: 11px; color: var(--muted); } /* 「公式の説明」は小さな1行目（3枚とも同じ形に） */
 .chips { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; margin-bottom: 0; align-content: flex-start; }
-.chips li { font-size: 12px; border: 1px solid var(--line); border-radius: 14px; padding: 3px 10px 3px 8px; display: flex; gap: 4px; align-items: center; }
+.chips li { font-size: 12px; border: 1px solid var(--line); border-radius: 14px; padding: 3px 8px 3px 6px; display: flex; gap: 4px; align-items: center; }
 .sec { margin-top: 14px; }
 .sec h4 { font-size: 13px; margin: 0 0 4px; }
 .sec ul { list-style: none; margin: 0; padding: 0; font-size: 14px; }
@@ -102,21 +110,28 @@ h2[tabindex], h3[tabindex] { scroll-margin-top: 16px; }
 .card .actions2 { display: grid; gap: 8px; padding: 14px 0 18px; margin-top: auto; }
 .card .btnrow { padding-top: 14px; }
 .card .morerow { padding: 8px 0 18px; }
-.btn a, button.primary, button.secondary, button.more {
+.buy a, .result-buy a, button.primary, button.secondary, button.more {
   display: block; width: 100%; text-align: center; padding: 11px 12px; font: inherit; font-size: 14px; border-radius: 2px; text-decoration: none; cursor: pointer; min-height: 44px;
 }
-.btn a, button.primary { background: var(--ink); color: #fff; border: 1px solid var(--ink); }
+.buy a, .result-buy a, button.primary { background: var(--ink); color: #fff; border: 1px solid var(--ink); }
 button.secondary, button.more { background: #fff; color: var(--ink); border: 1px solid var(--ink); }
+/* スマホだけ、詳細表とよくある質問は最初は閉じておく（見出しの下のボタンで開く）。PCはボタンを出さず、いつも開いている */
+button.sp-toggle { display: none; }
+@media (max-width: 699px) {
+  button.sp-toggle { display: block; margin: 10px 0 0; }
+  .collapsible.is-open button.sp-toggle { margin-bottom: 14px; }
+  .collapsible:not(.is-open) .collapse-body { display: none; }
+}
 button.more[aria-expanded="true"] { background: var(--panel); }
-.btn .disabled { display: block; text-align: center; padding: 11px 12px; font-size: 14px; border: 1px dashed var(--muted); color: var(--muted); background: #fff; margin: 0; }
+.buy .buy-off { display: block; text-align: center; padding: 11px 12px; font-size: 14px; border: 1px dashed var(--muted); color: var(--muted); background: #fff; margin: 0; }
 
 /* TOPの要約カード */
 .card.summary .catch { font-size: 15px; }
 .card.summary .lbl { font-size: 12px; color: var(--muted); margin: 0; }
 .card.summary .lbl + p { font-size: 14px; margin: 0 0 8px; }
-.toplinks { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 18px; }
+.toplinks { display: grid; grid-template-columns: 1fr; gap: 18px; margin-top: 22px; }
 @media (min-width: 700px) { .toplinks { grid-template-columns: repeat(3, 1fr); } }
-.toplinks a { display: flex; gap: 6px; justify-content: center; align-items: center; border: 1px solid var(--ink); padding: 10px; text-decoration: none; font-size: 14px; min-height: 44px; }
+.toplinks a { background: #fff; display: flex; gap: 6px; justify-content: center; align-items: center; border: 1px solid var(--ink); padding: 10px; text-decoration: none; font-size: 14px; min-height: 44px; }
 
 /* 詳しく見る（カードの下に横幅いっぱい） */
 .detail { margin-top: 18px; border: 2px solid var(--ink); border-radius: 6px; background: #fff; padding: 20px 16px; }
@@ -129,7 +144,7 @@ button.more[aria-expanded="true"] { background: var(--panel); }
 @media (min-width: 900px) { .dgrid { grid-template-columns: 1fr 1fr; } .dgrid .wide { grid-column: 1 / -1; } }
 .dblock h4 { font-size: 15px; margin: 0 0 10px; display: flex; gap: 8px; align-items: center; }
 .dblock h4 .num { display: inline-flex; width: 22px; height: 22px; border-radius: 50%; background: var(--ink); color: #fff; font-size: 12px; justify-content: center; align-items: center; flex: none; }
-.dblock .note { font-size: 12px; color: var(--muted); margin: 8px 0 0; }
+.dblock .dnote { font-size: 12px; color: var(--muted); margin: 8px 0 0; }
 .dblock svg { width: 100%; height: auto; display: block; }
 .disclose { font-size: 13px; margin: 0 0 6px; }
 .voices { display: grid; grid-template-columns: 1fr; gap: 10px; }
@@ -152,7 +167,8 @@ button.more[aria-expanded="true"] { background: var(--panel); }
 .scresult { margin: 10px 0 0; font-size: 14px; padding: 8px 12px; background: var(--panel); border-radius: 6px; }
 .wbars { display: grid; gap: 6px; }
 .wrow { display: grid; grid-template-columns: 6.5em 1fr 8.5em; gap: 8px; align-items: center; font-size: 13px; } /* 3列目は固定幅：札があっても棒の基準幅を変えない */
-.tagsel { margin-left: 6px; font-size: 11px; background: var(--ink); color: #fff; border-radius: 2px; padding: 0 6px; }
+.tagsel, .tagph { margin-left: 6px; font-size: 11px; background: var(--ink); color: #fff; border-radius: 2px; padding: 0 6px; }
+.tagph { visibility: hidden; } /* 「選択中」の無い行も同じ幅を空けて、数字の右端をそろえる */
 .na-note { margin: 10px 0 0; padding: 8px 12px; background: var(--na-bg); border: 1px dashed var(--muted); font-size: 14px; }
 .flownote { font-size: 13px; }
 .wrow .wb { background: #f3eee9; border-radius: 3px; height: 14px; }
@@ -173,6 +189,7 @@ button.more[aria-expanded="true"] { background: var(--panel); }
 .selector legend { font-weight: 600; margin-bottom: 8px; padding: 0; }
 .tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
 @media (min-width: 700px) { .tiles.c4 { grid-template-columns: repeat(4, 1fr); } .tiles.c5 { grid-template-columns: repeat(5, 1fr); } .tiles.c3 { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 699px) { .tiles label:last-child:nth-child(odd) { grid-column: 1 / -1; } } /* 2列で最後の1つが残るときは横幅いっぱいに */
 .tiles label { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; background: #fff; border: 1px solid #8f7f85; border-radius: 6px; padding: 12px 8px; cursor: pointer; font-size: 13px; line-height: 1.5; min-height: 44px; }
 .tiles input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .tiles .ic { width: 30px; height: 30px; }
@@ -181,6 +198,10 @@ button.more[aria-expanded="true"] { background: var(--panel); }
 .result { background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 16px; }
 .result h3 { font-size: 16px; margin: 0 0 6px; }
 .result ul.notes { margin: 6px 0 12px; padding-left: 1.2em; }
+.result-buy { display: grid; grid-template-columns: 1fr; gap: 8px; margin: 12px 0 4px; }
+@media (min-width: 700px) { .result-buy { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); max-width: 760px; } }
+.result-buy a { line-height: 1.5; }
+.result-buy a small { display: block; font-size: 12px; opacity: .85; }
 .result .actions { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 10px; }
 @media (min-width: 700px) { .result .actions { grid-template-columns: 1fr 1fr; max-width: 520px; } }
 .result .links { margin: 14px 0 0; padding-left: 1.2em; font-size: 14px; }
@@ -209,9 +230,13 @@ table.compare { border-collapse: separate; border-spacing: 0; width: 100%; font-
 .dots { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
 .dots span { font-size: 11px; border: 1px solid var(--line); border-radius: 10px; padding: 0 7px; color: var(--muted); }
 .dots span.on { background: var(--ink); color: #fff; border-color: var(--ink); }
-.scroll-hint { font-size: 12px; color: var(--muted); margin: 6px 0 0; }
+.scroll-hint { font-size: 12px; color: var(--muted); margin: 0 0 6px; }
+.table-scroll { position: relative; }
+.table-scroll::after { content: ""; position: absolute; top: 1px; right: 1px; bottom: 1px; width: 28px; pointer-events: none; border-radius: 0 6px 6px 0; background: linear-gradient(to right, rgba(82, 67, 73, 0), rgba(82, 67, 73, .16)); transition: opacity .2s; }
+.table-scroll.at-end::after { opacity: 0; } /* 右端まで動かしたら影を消す */
 @media (min-width: 900px) { .scroll-hint { display: none; } }
-.table-note { font-size: 13px; margin: 12px 0 0; scroll-margin-top: 16px; }
+.table-note { font-size: 13px; margin: 12px 0 0; scroll-margin-top: 16px; max-width: 760px; }
+.tolist { margin: -10px 0 16px; font-size: 14px; }
 .table-note p { margin: 0 0 6px; }
 
 /* Q&A */
@@ -272,6 +297,7 @@ table.compare { border-collapse: separate; border-spacing: 0; width: 100%; font-
       <section class="section" aria-labelledby="cards-heading">
         <h2 id="cards-heading" tabindex="-1">3つのマットレスの選び方</h2>
         <p class="lead">寝心地のつくりと、お手入れ・サイズ・価格を見比べてください。「詳しく見る」で、購入者の声と、自分に当てはまるかを確かめられます。</p>
+        <p class="tolist"><a href="https://limne.jp/collections/mattress#l3m-products" data-anchor="l3m-products">商品一覧へ移動する</a></p>
         <div class="cards" id="list-cards"></div>
         <section class="detail" id="detail" aria-labelledby="detail-title" hidden></section>
       </section>
@@ -297,8 +323,9 @@ table.compare { border-collapse: separate; border-spacing: 0; width: 100%; font-
           <!-- 読み上げは見出しと注記だけ（ボタン・リンクは作り直さない） -->
           <div id="result-status" role="status" aria-live="polite" aria-atomic="true"></div>
           <div id="result-controls" hidden>
+            <div class="result-buy" id="result-buy"></div>
             <div class="actions">
-              <button type="button" class="primary" id="jump">結果のカードを見る</button>
+              <button type="button" class="secondary" id="jump">結果のカードを見る</button>
               <button type="button" class="secondary" id="reset">選び直す</button>
             </div>
             <ul class="links">
@@ -309,24 +336,31 @@ table.compare { border-collapse: separate; border-spacing: 0; width: 100%; font-
         </div>
       </section>
 
-      <section class="section" aria-labelledby="compare-heading">
+      <section class="section collapsible" aria-labelledby="compare-heading">
         <h2 id="compare-heading" tabindex="-1">3つのマットレスの違い</h2>
-        <div class="table-wrap" tabindex="0" role="region" aria-label="3つのマットレスの比較表（横にスクロールできます）">
-          <table class="compare" id="compare"></table>
-        </div>
+        <button type="button" class="secondary sp-toggle" data-toggle="compare" aria-expanded="false" aria-controls="compare-body" data-open="比較表を開く" data-close="比較表を閉じる">比較表を開く</button>
+        <div class="collapse-body" id="compare-body">
         <p class="scroll-hint">表は横にスクロールできます。</p>
+        <div class="table-scroll" id="table-scroll">
+          <div class="table-wrap" tabindex="0" role="region" aria-label="3つのマットレスの比較表（横にスクロールできます）">
+            <table class="compare" id="compare"></table>
+          </div>
+        </div>
         <div class="table-note" id="guarantee-note" tabindex="-1">
-          <p>返金保証の条件：返品時の回収は無料です。返金はマットレス本体の価格だけで、保証オプション料と不要マットレス引き取りサービス料（37,000円）は返金されません。無金利分割決済（株式会社ジャックス）の場合は保証期間が30日で、返品の前に引き取りサービス料などを銀行振込でお支払いいただきます。搬出の経路の都合で指定業者が回収できない場合は、返金保証をご利用いただけません。引き取り日の4日前を過ぎたキャンセルには6,000円がかかります。ご利用は1回限りで、所定の最低利用期間（<mark class="pending">◯日</mark>）があります。対象となる購入先：<mark class="pending">◯◯</mark>。詳しくは <a href="https://limne.jp/pages/shopping_guide" target="_blank" rel="noopener">https://limne.jp/pages/shopping_guide</a> 。</p>
+          <p>返金保証の条件：返品時の回収は無料です。返金はマットレス本体の価格だけで、保証オプション料と不要マットレス引き取りサービス料（37,000円）は返金されません。無金利分割決済<span class="nb">（株式会社ジャックス）</span>の場合は保証期間が30日で、返品の前に引き取りサービス料などを銀行振込でお支払いいただきます。搬出の経路の都合で指定業者が回収できない場合は、返金保証をご利用いただけません。引き取り日の4日前を過ぎたキャンセルには6,000円がかかります。ご利用は1回限りで、所定の最低利用期間（<mark class="pending">◯日</mark>）があります。対象となる購入先：<mark class="pending">◯◯</mark>。詳しくは <a href="https://limne.jp/pages/shopping_guide" target="_blank" rel="noopener">https://limne.jp/pages/shopping_guide</a>。</p>
           <p>価格は<mark class="pending">2026年◯月◯日</mark>時点の税込価格です。</p>
         </div>
         <p class="morelinks"><a href="https://limne.jp/pages/limne-recovery-mattress" target="_blank" rel="noopener">構造の違いを詳しく見る</a></p>
+        </div>
       </section>
+
+      <div class="placeholder" id="l3m-products" tabindex="-1"><strong>既存の商品一覧</strong></div>
 
       <section class="section qa" aria-labelledby="qa-heading">
         <h2 id="qa-heading">選ぶときによくある質問</h2>
         <details data-qa="soft">
           <summary>最初に寝たとき、柔らかすぎる気がします<span class="mk" aria-hidden="true"></span></summary>
-          <p>座ったり触ったりしたときと、横になったときでは感じ方が違います。使い始めてしばらくすると感じ方が変わることもあります。スフエアーとリッチコイルには120日間の返金保証が付きます（無金利分割決済〈ジャックス〉の場合は30日）。エントリーは、購入時に有償オプション（＋10,000円）を付けた場合だけで、期間の扱いは同じです。条件あり（返金は本体価格のみ・1回限り・最低利用期間あり）。<a href="https://limne.jp/collections/mattress#guarantee-note" data-anchor="guarantee-note">条件を見る</a></p>
+          <p>座ったり触ったりしたときと、横になったときでは感じ方が違います。使い始めてしばらくすると感じ方が変わることもあります。スフエアーとリッチコイルには120日間の返金保証が付きます（無金利分割決済〈ジャックス〉の場合は30日）。エントリーは、購入時に有償オプション（<span class="nb">＋10,000円</span>）を付けた場合だけで、期間の扱いは同じです。条件あり（返金は本体価格のみ・1回限り・最低利用期間あり）。<a href="https://limne.jp/collections/mattress#guarantee-note" data-anchor="guarantee-note">条件を見る</a></p>
         </details>
         <details data-qa="smell">
           <summary>開けたときのにおいが気になります<span class="mk" aria-hidden="true"></span></summary>
@@ -336,13 +370,13 @@ table.compare { border-collapse: separate; border-spacing: 0; width: 100%; font-
           <summary>合わなかったらどうなりますか<span class="mk" aria-hidden="true"></span></summary>
           <ul>
             <li>スフエアーモデル・リッチコイルモデル（ロングを含む）：120日間の返金保証が無料で付きます（無金利分割決済〈ジャックス〉の場合は30日）。</li>
-            <li>エントリーモデル：購入時に有償オプション（＋10,000円）を同時に申し込んだ場合が対象です。期間は120日間（無金利分割決済〈ジャックス〉の場合は30日）。保証料は返金されません。</li>
+            <li>エントリーモデル：購入時に有償オプション（<span class="nb">＋10,000円</span>）を同時に申し込んだ場合が対象です。期間は120日間（無金利分割決済〈ジャックス〉の場合は30日）。保証料は返金されません。</li>
             <li>無金利分割決済（株式会社ジャックス）の場合は、どのモデルも保証期間が30日で、返品の前に引き取りサービス料などを銀行振込でお支払いいただきます。</li>
             <li>返品時の回収は無料です。返金はマットレス本体の価格だけで、保証オプション料と不要マットレス引き取りサービス料（37,000円）は返金されません。</li>
             <li>搬出の経路の都合で指定業者が回収できない場合は、返金保証をご利用いただけません。引き取り日の4日前を過ぎたキャンセルには6,000円がかかります。</li>
             <li>ご利用は1回限りで、所定の最低利用期間（<mark class="pending">◯日</mark>）があります。対象となる購入先：<mark class="pending">◯◯</mark>。</li>
           </ul>
-          <p>詳しくは <a href="https://limne.jp/pages/shopping_guide" target="_blank" rel="noopener">https://limne.jp/pages/shopping_guide</a> 。</p>
+          <p>詳しくは <a href="https://limne.jp/pages/shopping_guide" target="_blank" rel="noopener">https://limne.jp/pages/shopping_guide</a>。</p>
         </details>
         <details data-qa="origin">
           <summary>どれが日本製ですか<span class="mk" aria-hidden="true"></span></summary>
@@ -362,8 +396,6 @@ table.compare { border-collapse: separate; border-spacing: 0; width: 100%; font-
         </details>
         <p class="morelinks">ほかの質問は <a href="https://limne.jp/pages/faq" target="_blank" rel="noopener">https://limne.jp/pages/faq</a> へ。</p>
       </section>
-
-      <div class="placeholder"><strong>既存の商品一覧</strong></div>
     </div>
   </section>
 </main>
@@ -756,12 +788,36 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
 (function () {
   var L = SelectorLogic, D = L.DATA;
   window.dataLayer = window.dataLayer || [];
-  var EXPERIMENT = { experiment_id: '未定', variant: '未定' }; // 実装ではVWOの割り付けを入れる
+  // 設定：Shopifyではセクションの設定から入る。無ければモックの表示（確定待ちの印）のまま
+  var CFG = window.L3M_CFG || {};
+  var EXPERIMENT = { experiment_id: CFG.experimentId || '未定', variant: CFG.variant || '未定' }; // 実装ではVWOの割り付けを入れる
+  // 作り直すとき（テーマエディタで設定を変えたとき）に、ページ全体の受け口・タイマーを止める
+  var AC = typeof AbortController === 'function' ? new AbortController() : null, LOPT = AC ? { signal: AC.signal } : false, STOPS = [];
+  window.__l3mStop = function () { if (AC) AC.abort(); STOPS.forEach(function (f) { try { f(); } catch (e) {} }); };
+  function listen(el, type, fn) { el.addEventListener(type, fn, LOPT); } // 受け口はすべてこれで付ける（作り直しのときにまとめて外れる）
 
   // ---- 小さな部品 ----
   var PENDING = function (t) { return '<mark class="pending">' + t + '</mark>'; };
+  var MOCK = !!document.getElementById('btn-top'); // モックだけにある「TOPの表示／一覧の表示」の切り替え
+  var LIST_URL = CFG.listUrl || 'https://limne.jp/collections/mattress'; // TOPから移る一覧ページ（Shopifyでは /collections/mattress）
+  var LINK_ATTR = CFG.newTab === false ? '' : ' target="_blank" rel="noopener"'; // 商品ページを新しいタブで開くか
+  var ORIGIN_S = CFG.originS ? esc(CFG.originS) : PENDING('確定後に記載');
+  var MIN_DAYS = String(CFG.minDays || '').trim().replace(/日$/, '') ? esc(String(CFG.minDays).trim().replace(/日$/, '')) + '日' : PENDING('◯日');
+  var LONG_OK = !!CFG.longConfirmed; // ロングの構造・寝心地の説明を確認できたら確認中の印を消す
+  function LONG_PENDING(t) { return LONG_OK ? '' : PENDING(t); }
+  // 重さの確定値（Shopifyの設定から。例 { E: { 'シングル': '16' } }）。入っていれば商品ページ本文の値を置き換え、エントリーの「確定後に記載」も外す
+  var W_OK = {};
+  Object.keys(CFG.weights || {}).forEach(function (m) {
+    Object.keys(CFG.weights[m] || {}).forEach(function (sz) {
+      var v = String(CFG.weights[m][sz] || '').trim().replace(/kg$/i, '');
+      if (/^\d+(\.\d+)?$/.test(v) && D.weight[m] && sz in D.weight[m]) { D.weight[m][sz] = v; (W_OK[m] = W_OK[m] || {})[sz] = true; }
+    });
+  });
+  var SHOW_VOICES = CFG.showVoices !== false && !!D.quotes; // 購入者の声（法務の確認が済むまで Shopify では既定で出さず、データもページに入れない）
   var FEE = L.yen(D.fee.E) + '円'; // 保証オプションの価格は商品データから
   function sizesText(m) { return D.sizes[m].map(function (x) { return x.replace(/ロング$/, ''); }).join('・'); }
+  function sizesHtml(m) { return D.sizes[m].map(function (x) { return '<span class="nb">' + esc(x.replace(/ロング$/, '')) + '</span>'; }).join('・'); } // 詳細表用（サイズ名の途中で折り返さない）
+  function nbFee(h) { return h.split('＋' + FEE).join('<span class="nb">＋' + FEE + '</span>'); } // 「＋」と保証料の金額を割らない（esc のあとに使う）
   function H(html) { return { html: html }; } // 文言の中に黄色の確定待ちを入れるとき
   function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function yen(n) { return L.yen(n) + '円〜'; }
@@ -812,7 +868,7 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
   };
   // big：詳しく見る（図を大きくし、横に構造の説明を置く）。カードでは図の下に1行の説明
   function diagram(slot, isLong, big) {
-    var key = isLong ? 'RL' : slot, d = DG[key], fig;
+    var key = isLong && !LONG_OK ? 'RL' : slot, d = DG[key], fig;
     if (key === 'RL') return '<div class="dgframe dgpending" role="img" aria-label="' + esc(d.alt) + '"><span>ロングの構造は確認中</span></div>';
     var c = d.crop, m = d.mask; // 切り抜き：枠の縦横比を切り抜く範囲に合わせ、画像を左上へずらす（% は枠の幅に対する割合）
     fig = '<div class="dgframe"><span class="dgcrop" style="aspect-ratio:' + c[2] + '/' + c[3] + ';--ar:' + (c[2] / c[3]).toFixed(4) + '"><img src="' + esc(d.src) + '" alt="' + esc(d.alt) + '" style="width:' + (d.W / c[2] * 100).toFixed(2) + '%;margin-left:' + (-c[0] / c[2] * 100).toFixed(2) + '%;margin-top:' + (-c[1] / c[2] * 100).toFixed(2) + '%">'
@@ -824,14 +880,14 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
   }
 
   // ---- 文言（MD/27 第10版 第3章の確定原稿）。寝心地は各モデルの公式の説明だけを使い、ほかのモデルの説明の語を「合わない」側に置かない ----
-  var GUARANTEE_COND = '条件あり（返金は本体価格のみ・1回限り・最低利用期間あり）。<a href="https://limne.jp/collections/mattress#guarantee-note" data-anchor="guarantee-note">条件を見る</a>';
-  var GUARANTEE_COND_B = '<strong>条件あり</strong>（返金は本体価格のみ・1回限り・最低利用期間あり）。<a href="https://limne.jp/collections/mattress#guarantee-note" data-anchor="guarantee-note">条件を見る</a>'; // 詳細表用（太字）
+  var GUARANTEE_COND = '条件あり（返金は本体価格のみ・1回限り・最低利用期間あり）。<a href="' + LIST_URL + '#guarantee-note" data-anchor="guarantee-note">条件を見る</a>';
+  var GUARANTEE_COND_B = '<strong class="nb">条件あり</strong>（返金は本体価格のみ・1回限り・最低利用期間あり）。<a href="' + LIST_URL + '#guarantee-note" data-anchor="guarantee-note">条件を見る</a>'; // 詳細表用（太字）
   var SHOP_NOTE = '寝心地は、店舗で寝比べて確かめられます（店舗によって展示のサイズは異なります）。';
   var CONTENT = {
     S: {
       name: 'スフエアーモデル', spec: 'ウレタン三層・厚さ22cm',
-      origin: '製造国：' + PENDING('確定後に記載') + '（オリジナルは1〜3層目のウレタンが日本製、ハイブリッドは2・3層目を海外の提携工場で製造）',
-      catch: 'やわらかい表層で受け止める、三層ウレタン。', feel: '公式の説明「ふかふかで包み込まれる」', feelQ: 'ふかふかで包み込まれる',
+      origin: '製造国：' + ORIGIN_S + '（オリジナルは1〜3層目のウレタンが日本製、ハイブリッドは2・3層目を海外の提携工場で製造）',
+      catch: 'やわらかい表層で受け止める、三層ウレタン。', feel: '<span class="fl">公式の説明</span><span class="nw">「ふかふかで包み込まれる」</span>', feelQ: 'ふかふかで包み込まれる',
       design: '柔らかく受け止めて、沈みすぎない',
       good: ['「ふかふかで包み込まれる」寝心地が好きな方', 'カバーを外して洗いたい方', 'コイルを使わないウレタンだけの構造で、立て掛けて陰干ししたい方'],
       ng: function () { return ['トップ層はやわらかめです（公式の説明）。ほかのモデルの公式の説明とも見比べてください',
@@ -843,17 +899,17 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
           ['ウレタン特有のにおいが気になる', 'においがする場合があります。風通しの良いところにしばらく置いてください。']] }; },
       cover: true, guarantee: '返金保証：120日間（無金利分割決済〈ジャックス〉の場合は30日）。無料で付きます。',
       button: 'スフエアーモデルを見る',
-      top: { good: '「ふかふかで包み込まれる」寝心地が好きな方', ng: 'トップ層はやわらかめです（公式の説明）', origin: 'ウレタン三層・22cm／製造国は' + PENDING('確定後に記載'), priceNote: 'シングル・ハイブリッド' }
+      top: { good: '「ふかふかで包み込まれる」寝心地が好きな方', ng: 'トップ層はやわらかめです（公式の説明）', origin: 'ウレタン三層・22cm／製造国は' + ORIGIN_S, priceNote: 'シングル・ハイブリッド' }
     },
     R: {
       name: 'リッチコイルモデル', spec: '二層ポケットコイル・厚さ25cm', origin: '製造国：中国（日本企画）',
-      catch: '適度な反発の、二層ポケットコイル。', feel: '公式の説明「かたすぎず、柔らかすぎない適度な反発力」', feelQ: 'かたすぎず、柔らかすぎない適度な反発力',
+      catch: '適度な反発の、二層ポケットコイル。', feel: '<span class="fl">公式の説明</span><span class="nw">「かたすぎず、柔らかすぎない適度な反発力」</span>', feelQ: 'かたすぎず、柔らかすぎない適度な反発力',
       design: '上層で受け止め、下層で沈み込みすぎを防ぐ',
       good: ['「かたすぎず、柔らかすぎない適度な反発」が好きな方', 'コイルの押し返し（反発）がある寝心地が好きな方', '長さ210cmが必要な方（ロングモデル：シングル〜ダブル）'],
       ng: function (c, pend) { return ['カバーを外して洗いたい方（カバーは外せません。乾いた布で拭きます）',
         '一人で動かしたい方（' + c.size_label + '約' + c.weight + 'kg）']; },
       check: function (c, isLong) {
-        var p = isLong ? ' ' + PENDING('ロングにも当てはまるか確認中') : '';
+        var p = isLong ? ' ' + LONG_PENDING('ロングにも当てはまるか確認中') : '';
         return {
           good: [H(esc('「かたすぎず、柔らかすぎない適度な反発」が好き') + p), H(esc('コイルの押し返し（反発）がある寝心地が好き') + p)],
           ng: [['カバーを外して洗いたい', 'カバーは外せません（乾いた布で拭きます）。'],
@@ -861,16 +917,16 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
       cover: false, guarantee: '返金保証：120日間（無金利分割決済〈ジャックス〉の場合は30日）。無料で付きます。',
       button: 'リッチコイルモデルを見る',
       long: {
-        name: 'リッチコイル ロングモデル', spec: '厚さ25cm・長さ210cm ' + PENDING('構造が通常品と同じ二層ポケットコイルか確認中'),
-        catch: '長さ210cmの、リッチコイル ロング。', feel: '公式の説明「かたすぎず、柔らかすぎない適度な反発力」' + PENDING('ロングにも当てはまるか確認中'),
-        good: [H(esc('長さ210cmが必要な方（' + sizesText('RL') + '）')), H(PENDING('寝心地の説明（適度な反発）がロングにも当てはまるか確認中'))],
+        name: 'リッチコイル ロングモデル', spec: LONG_OK ? '二層ポケットコイル・厚さ25cm・長さ210cm' : '厚さ25cm・長さ210cm ' + PENDING('構造が通常品と同じ二層ポケットコイルか確認中'),
+        catch: '長さ210cmの、リッチコイル ロング。', feel: '<span class="fl">公式の説明</span><span class="nw">「かたすぎず、柔らかすぎない適度な反発力」</span>' + LONG_PENDING('ロングにも当てはまるか確認中'),
+        good: [H(esc('長さ210cmが必要な方（' + sizesText('RL') + '）')), LONG_OK ? '「かたすぎず、柔らかすぎない適度な反発」が好きな方' : H(PENDING('寝心地の説明（適度な反発）がロングにも当てはまるか確認中'))],
         button: 'リッチコイル ロングモデルを見る'
       },
       top: { good: '「かたすぎず、柔らかすぎない適度な反発」が好きな方', ng: 'カバーは外せません', origin: '二層ポケットコイル・25cm／中国製（日本企画）', priceNote: 'シングル' }
     },
     E: {
       name: 'エントリーモデル', spec: 'ミルキーコイル・11層・厚さ22cm', origin: '製造国：中国（日本企画）',
-      catch: 'はじめての1枚に、選びやすい。', feel: '公式の説明「しっかりと支えながらもふんわり」', feelQ: 'しっかりと支えながらもふんわり',
+      catch: 'はじめての1枚に、選びやすい。', feel: '<span class="fl">公式の説明</span><span class="nw">「しっかりと支えながらもふんわり」</span>', feelQ: 'しっかりと支えながらもふんわり',
       design: 'コイルの弾力で寝姿勢を保つ',
       good: ['「しっかりと支えながらもふんわり」が好きな方', '価格を抑えて、はじめてのマットレスを用意したい方'],
       ng: function () { return ['クイーン・キング・ワイドダブルが必要な方（' + sizesText('E') + 'のみ）',
@@ -890,7 +946,7 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
   };
   function weightText(m, c) {
     var p = WEIGHT_PENDING[m] && WEIGHT_PENDING[m][c.size_label];
-    if (m === 'E') return PENDING('確定後に記載');
+    if (m === 'E' && !(W_OK.E && W_OK.E[c.size_label])) return PENDING('確定後に記載');
     return '約' + c.weight + 'kg';
   }
   function items(list, icon) { return list.map(function (t) { return '<li>' + ic(icon) + '<span>' + (typeof t === 'string' ? esc(t) : t.html) + '</span></li>'; }).join(''); }
@@ -903,7 +959,8 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
     window.dataLayer.push(o);
     var shown = {}; Object.keys(o).forEach(function (k) { if (o[k] !== undefined) shown[k] = o[k]; });
     var li = document.createElement('li'); li.textContent = JSON.stringify(shown);
-    var list = document.getElementById('evlog-list'); list.insertBefore(li, list.firstChild);
+    var list = document.getElementById('evlog-list'); if (!list) return; // モックだけの欄
+    list.insertBefore(li, list.firstChild);
     while (list.children.length > 12) list.removeChild(list.lastChild);
   }
 
@@ -923,8 +980,9 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
 
   // ---- 3問の選択肢（絵の付いたタイル）----
   var Q = {
-    q1: [['S', 'cloud', '「ふかふかで包み込まれる」'], ['R', 'spring', '「かたすぎず、柔らかすぎない適度な反発」'], ['E', 'layers', '「しっかりと支えながらもふんわり」'], ['none', 'question', 'わからない・決めかねている']],
-    q2: [['S-D', null, 'シングル〜ダブル'], ['WD', null, 'ワイドダブル'], ['QK', null, 'クイーン・キング'], ['L210', null, '長さ210cm（シングル〜ダブル）'], ['未定', 'question', '決まっていない']],
+    // 選択肢の文は、折り返すなら語の切れ目で（.nw のかたまりの間だけで折り返す）
+    q1: [['S', 'cloud', '<span class="nw">「ふかふかで</span><span class="nw">包み込まれる」</span>'], ['R', 'spring', '<span class="nw">「かたすぎず、</span><span class="nw">柔らかすぎない</span><span class="nw">適度な反発」</span>'], ['E', 'layers', '<span class="nw">「しっかりと</span><span class="nw">支えながらも</span><span class="nw">ふんわり」</span>'], ['none', 'question', '<span class="nw">わからない・</span><span class="nw">決めかねている</span>']],
+    q2: [['S-D', null, 'シングル〜ダブル'], ['WD', null, 'ワイドダブル'], ['QK', null, '<span class="nw">クイーン・</span><span class="nw">キング</span>'], ['L210', null, '<span class="nw">長さ210cm</span><span class="nw">（シングル〜ダブル）</span>'], ['未定', 'question', '決まっていない']],
     q3: [['price', 'yen', '価格を抑えたい'], ['cover', 'wash', 'カバーを洗いたい'], ['none', 'dash', '特にない']]
   };
   var Q2BED = { 'S-D': [120, 195], 'WD': [150, 195], 'QK': [180, 195], 'L210': [120, 210] }; // 絵の大きさの目安（幅・長さcm）
@@ -933,7 +991,8 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
     return '<svg class="ic" viewBox="0 0 30 30" aria-hidden="true"><rect x="' + (15 - sw / 2) + '" y="' + (28 - sl) + '" width="' + sw + '" height="' + sl + '" rx="1.5"/><line x1="' + (15 - sw / 2 + 3) + '" y1="' + (28 - sl + 5) + '" x2="' + (15 + sw / 2 - 3) + '" y2="' + (28 - sl + 5) + '"/></svg>';
   }
   ['q1', 'q2', 'q3'].forEach(function (k) {
-    document.getElementById(k + '-tiles').innerHTML = Q[k].map(function (o) {
+    var box = document.getElementById(k + '-tiles'); if (!box) return; // TOPには3問が無い
+    box.innerHTML = Q[k].map(function (o) {
       return '<label><input type="radio" name="' + k + '" value="' + o[0] + '">' + (o[1] ? ic(o[1]) : bedIcon(Q2BED[o[0]])) + '<span>' + o[2] + '</span></label>';
     }).join('');
   });
@@ -949,10 +1008,11 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
   function priceLines(s, c, sizeLabel) {
     var label = '（' + sizeLabel + '）';
     if (s === 'S') return '<p class="price">' + yen(c.price) + label + '</p><p class="sub">ハイブリッドの価格。オリジナルは' + yen(c.price_sub) + '</p>';
-    if (s === 'E') return '<p class="price">' + yen(c.price) + label + '</p><p class="sub">返金保証を付ける場合は＋' + FEE + '（' + yen(c.with_guarantee) + '）</p>';
+    if (s === 'E') return '<p class="price">' + yen(c.price) + label + '</p><p class="sub">返金保証を付ける場合は<span class="nb">＋' + FEE + '</span>（' + yen(c.with_guarantee) + '）</p>';
     return '<p class="price">' + yen(c.price) + label + '</p>';
   }
   function renderListCards(res) {
+    if (!document.getElementById('list-cards')) return;
     var showRes = answered(), r = res.r, base = L.decide(null, '未定', null); // 未回答のときはシングルの価格で表示
     var sizeLabel = showRes ? r.sizeLabel : base.sizeLabel;
     document.getElementById('list-cards').innerHTML = L.ORDER.map(function (s) {
@@ -960,14 +1020,14 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
       var c = (showRes && r.cards[s]) || base.cards[s], isLong = c.model === 'RL', src = isLong ? cont.long : cont;
       var isRec = showRes && r.rec && L.slot(r.rec) === s;
       var flags = '';
-      if (isRec) flags += '<span class="flag rec">あなたの答えに近い寝心地のモデル</span>' + (isLong ? ' ' + PENDING('ロングにも同じ寝心地の説明が当てはまるかは確認中') : '');
+      if (isRec) flags += '<span class="flag rec">あなたの答えに近い寝心地のモデル</span>' + (isLong && !LONG_OK ? ' ' + PENDING('ロングにも同じ寝心地の説明が当てはまるかは確認中') : '');
       if (unavailable) flags += '<span class="flag na">このサイズはありません</span>';
-      if (showRes && r.tags[s]) flags += r.tags[s].map(function (t) { return '<span class="flag tag">' + esc(t) + '</span>'; }).join('');
+      if (showRes && r.tags[s]) flags += r.tags[s].map(function (t) { return '<span class="flag ftag">' + esc(t) + '</span>'; }).join('');
       var pend = (WEIGHT_PENDING[c.model] || {})[c.size_label];
       var btnLabel = esc(src.button);
       var btn = unavailable
-        ? '<div class="btn"><p class="disabled">' + btnLabel + '（このサイズでは購入できません）</p></div>'
-        : '<div class="btn"><a href="' + c.url + '" target="_blank" rel="noopener" data-model="' + c.model + '" data-rec="' + (isRec ? '1' : '0') + '">' + btnLabel + '</a></div>';
+        ? '<div class="buy"><p class="buy-off">' + btnLabel + '（このサイズでは購入できません）</p></div>'
+        : '<div class="buy"><a href="' + c.url + '"' + LINK_ATTR + ' data-model="' + c.model + '" data-rec="' + (isRec ? '1' : '0') + '">' + btnLabel + '</a></div>';
       var weight = '<p class="sub">重さ（' + esc(sizeLabel) + '）：' + weightText(c.model, c) + '</p>';
       var open = detailSlot === s;
       return '<article class="card' + (isRec ? ' is-rec' : '') + (unavailable ? ' is-unavailable' : '') + '" id="art-' + s + '" aria-labelledby="card-' + s + '" aria-describedby="flags-' + s + '">'
@@ -980,7 +1040,7 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
         + '<div class="sec good"><h4>向いている方</h4><ul>' + items(src.good, 'check') + '</ul></div>'
         + '<div class="sec ng"><h4>合わないことがある方</h4><ul>' + items(cont.ng(c, pend), 'alert') + '</ul></div>'
         + '<div class="pricebox">' + (unavailable ? '' : priceLines(s, c, sizeLabel) + weight) + '</div>'
-        + '<p class="guarantee">' + esc(cont.guarantee) + GUARANTEE_COND + '</p>'
+        + '<p class="guarantee">' + nbFee(esc(cont.guarantee)) + GUARANTEE_COND + '</p>'
         + '<div class="btnrow">' + btn + '</div><div class="morerow"><button type="button" class="more" data-detail="' + s + '" aria-controls="detail" aria-expanded="' + open + '" aria-label="' + esc(src.name) + 'の詳しい情報（購入者の声・当てはまるか）">詳しく見る（購入者の声・当てはまるか）</button></div>'
         + '</article>';
     }).join('');
@@ -988,6 +1048,7 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
 
   // ---- カード（TOP）：どのカードも7段。価格はシングル ----
   function renderTopCards() {
+    if (!document.getElementById('top-cards')) return;
     var base = L.decide(null, '未定', null);
     document.getElementById('top-cards').innerHTML = L.ORDER.map(function (s) {
       var cont = CONTENT[s], c = base.cards[s];
@@ -996,10 +1057,10 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
         + '<div><h3 id="top-card-' + s + '">' + esc(cont.name) + '</h3><p class="spec">' + cont.top.origin + '</p></div>'
         + '<div class="diagram">' + diagram(s, false) + '</div>'
         + '<div><p class="catch">' + esc(cont.catch) + '</p><span class="feel">' + cont.feel + '</span></div>'
-        + '<div class="sec"><p class="lbl">向いている方</p><p>' + esc(cont.top.good) + '</p><p class="lbl">合わないことがある方</p><p>' + esc(cont.top.ng)
-        + (cont.top.cond ? '。条件あり（返金は本体価格のみ・1回限り・最低利用期間あり）。<a href="https://limne.jp/collections/mattress#guarantee-note" data-goto="list" data-anchor="guarantee-note">条件を見る</a>' : '') + '</p></div>'
-        + '<div class="pricebox"><p class="price">' + yen(c.price) + '（' + cont.top.priceNote + '）</p></div>'
-        + '<div class="actions2"><div class="btn"><a href="' + c.url + '" target="_blank" rel="noopener" data-model="' + c.model + '" data-rec="0" data-place="top">' + esc(cont.button) + '</a></div></div>'
+        + '<div class="sec"><p class="lbl">向いている方</p><p>' + esc(cont.top.good) + '</p><p class="lbl">合わないことがある方</p><p>' + nbFee(esc(cont.top.ng))
+        + (cont.top.cond ? '。条件あり（返金は本体価格のみ・1回限り・最低利用期間あり）。<a href="' + LIST_URL + '#guarantee-note" data-goto="list" data-anchor="guarantee-note">条件を見る</a>' : '') + '</p></div>'
+        + '<div class="pricebox"><p class="price">' + yen(c.price) + '<span class="nb">（' + cont.top.priceNote + '）</span></p></div>'
+        + '<div class="actions2"><div class="buy"><a href="' + c.url + '"' + LINK_ATTR + ' data-model="' + c.model + '" data-rec="0" data-place="top">' + esc(cont.button) + '</a></div></div>'
         + '</article>';
     }).join('');
   }
@@ -1020,16 +1081,17 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
   }
   function renderDetail() {
     var box = document.getElementById('detail');
+    if (!box) return;
     if (!detailSlot) { box.hidden = true; box.innerHTML = ''; return; }
     var s = detailSlot, cont = CONTENT[s], res = current(), r = res.r;
     var c = detailCard(s);
     var shownModel = c.model, isLong = shownModel === 'RL', name = isLong ? cont.long.name : cont.name;
     var unavailable = answered() && !r.cards[s];
-    var qd = D.quotes[s];
+    var qd = SHOW_VOICES ? D.quotes[s] : null;
     var voiceNote = s === 'S' ? '2026年8月13日にタイプ（ハイブリッド／オリジナル）が分かれる前の口コミです。分かれた後の口コミはまだありません（2026年10月3日時点）。'
       : (isLong ? 'ロングの口コミはまだありません。リッチコイル（長さ195cm）の口コミです。' : '');
-    var lowNote = qd.low_in_pool ? '' : (qd.low_score_total ? '条件に合う★3以下の口コミは、今はありません（★3以下の口コミもありますが、基準に合うものがありません）。' : '★3以下の口コミは、今はありません。');
-    var voices = qd.quotes.map(function (v) {
+    var lowNote = !qd || qd.low_in_pool ? '' : (qd.low_score_total ? '条件に合う★3以下の口コミは、今はありません（★3以下の口コミもありますが、基準に合うものがありません）。' : '★3以下の口コミは、今はありません。');
+    var voices = !qd ? '' : qd.quotes.map(function (v) {
       return '<figure class="voice"><div class="meta">' + stars(v.score) + '<span class="vdate">' + esc(v.date.slice(0, 4) + '年' + Number(v.date.slice(5, 7)) + '月' + Number(v.date.slice(8, 10)) + '日') + '</span>'
         + (v.mismatch ? '<span class="vtag">合わなかった点に触れた口コミ</span>' : '') + '</div><blockquote>「' + esc(v.quote).replace(/\n/g, '<br>') + '」</blockquote></figure>';
     }).join('');
@@ -1044,38 +1106,38 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
     var anySel = keys.some(function (k) { return sel.indexOf(k) >= 0; });
     var bars = keys.map(function (key) {
       var d = ds[key], on = sel.indexOf(key) >= 0;
-      return '<div class="wrow' + (on ? ' on' : '') + '"><span class="wl">' + esc(key.replace('ロング', '')) + '</span><span class="wb"><span style="width:' + (d[0] / 180 * 100).toFixed(1) + '%"></span></span><span class="wv">' + d[0] + 'cm' + (on ? '<span class="tagsel">選択中</span>' : '') + '</span></div>';
+      return '<div class="wrow' + (on ? ' on' : '') + '"><span class="wl">' + esc(key.replace('ロング', '')) + '</span><span class="wb"><span style="width:' + (d[0] / 180 * 100).toFixed(1) + '%"></span></span><span class="wv">' + d[0] + 'cm' + (on ? '<span class="tagsel">選択中</span>' : (anySel ? '<span class="tagph" aria-hidden="true">選択中</span>' : '')) + '</span></div>';
     }).join('');
     box.innerHTML = '<div class="detail-head"><h3 id="detail-title" tabindex="-1">' + esc(name) + 'を詳しく見る</h3><button type="button" id="detail-close" aria-label="' + esc(name) + 'の詳しい情報を閉じる">閉じる</button></div>'
       + (unavailable ? '<p class="na-note">選んだサイズ（' + esc(Q2TEXT[res.q2]) + '）は、このモデルにありません。</p>' : '')
       + '<div class="dgrid">'
-      + '<div class="dblock wide"><h4><span class="num" aria-hidden="true">1</span>' + (isLong ? 'つくり（ロングの構造は確認中）' : 'つくり') + '</h4><div class="diagram">' + diagram(s, isLong, true) + '</div>'
-      + '<p class="note">寝心地（公式の説明' + (isLong ? '。通常のリッチコイル' : '') + '）：「' + cont.feelQ + '」' + (isLong ? PENDING('ロングにも当てはまるか確認中') : '') + '</p></div>'
+      + '<div class="dblock wide"><h4><span class="num" aria-hidden="true">1</span>' + (isLong && !LONG_OK ? 'つくり（ロングの構造は確認中）' : 'つくり') + '</h4><div class="diagram">' + diagram(s, isLong, true) + '</div>'
+      + '<p class="dnote">寝心地（公式の説明' + (isLong ? '。通常のリッチコイル' : '') + '）：「' + cont.feelQ + '」' + (isLong ? LONG_PENDING('ロングにも当てはまるか確認中') : '') + '</p></div>'
       + '<div class="dblock wide"><h4><span class="num" aria-hidden="true">2</span>自分に当てはまるかを確かめる</h4>'
-      + '<p class="note" style="margin:0 0 8px">当てはまるものを押してください。サイズと長さは、3問のQ2で選ぶと、選べるかどうかがカードと下の「サイズと幅」に出ます。</p>'
+      + '<p class="dnote" style="margin:0 0 8px">当てはまるものを押してください。サイズと長さは、3問のQ2で選ぶと、選べるかどうかがカードと下の「サイズと幅」に出ます。</p>'
       + '<div class="selfcheck" id="selfcheck">' + checks + '</div><p class="scresult" id="scresult" aria-live="polite">' + esc(selfText(gN, nN, follow(st))) + '</p></div>'
-      + '<div class="dblock wide"><h4><span class="num" aria-hidden="true">3</span>購入者の声（寝心地に触れた口コミ）</h4>'
+      + (SHOW_VOICES ? '<div class="dblock wide"><h4><span class="num" aria-hidden="true">3</span>購入者の声（寝心地に触れた口コミ）</h4>'
       + '<p class="disclose">公式サイトの購入確認済みの口コミのうち、下の基準に合うものから、新しい順に当社が選び、寝心地に触れた1文を抜き出して載せています（★3以下の口コミも基準どおりに含めます）。</p>'
       + (voiceNote ? '<p class="disclose">' + voiceNote + '</p>' : '')
       + (lowNote ? '<p class="disclose">' + lowNote + '</p>' : '')
       + '<div class="voices">' + voices + '</div>'
       + '<details class="criteria" id="criteria"' + (criteriaOpen ? ' open' : '') + '><summary>抜き出しの基準</summary><ul>' + D.quotes.criteria.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></details>'
-      + '<p class="note">※個人の感想です。</p>'
-      + '</div>'
+      + '<p class="dnote">※個人の感想です。</p>'
+      + '</div>' : '')
       + '<div class="dblock"><h4><span class="num" aria-hidden="true">4</span>サイズと幅（棒は寸法どおりの比率）</h4><div class="wbars">' + bars + '</div>'
-      + '<p class="note">どのサイズも長さ' + ds[keys[0]][1] + 'cm・厚さ' + ds[keys[0]][2] + 'cm。' + (anySel ? '「選択中」が、Q2で選んだサイズです。' : '') + '</p></div>'
+      + '<p class="dnote">どのサイズも長さ' + ds[keys[0]][1] + 'cm・厚さ' + ds[keys[0]][2] + 'cm。' + (anySel ? '「選択中」が、Q2で選んだサイズです。' : '') + '</p></div>'
       + '<div class="dblock"><h4><span class="num" aria-hidden="true">5</span>自宅で試す流れ（条件あり）</h4><div class="flow">'
-      + '<div>' + ic('truck') + '到着</div><div>' + ic('bed') + '最低利用期間（' + PENDING('◯日') + '）</div><div>' + ic('calendar') + '120日以内に申請</div><div>' + ic('refund') + '回収は無料・本体価格を返金</div></div>'
-      + '<p class="note flownote">' + (s === 'E' ? 'エントリーは、購入時に有償オプション（＋' + FEE + '）を付けた場合だけです。' : '') + '無金利分割決済（ジャックス）の場合は30日。' + GUARANTEE_COND + '</p></div>'
+      + '<div>' + ic('truck') + '到着</div><div>' + ic('bed') + '最低利用期間<span class="nw">（' + MIN_DAYS + '）</span></div><div>' + ic('calendar') + '120日以内に申請</div><div>' + ic('refund') + '回収は無料・<span class="nw">本体価格を返金</span></div></div>'
+      + '<p class="dnote flownote">' + (s === 'E' ? 'エントリーは、購入時に有償オプション（<span class="nb">＋' + FEE + '</span>）を付けた場合だけです。' : '') + '無金利分割決済（ジャックス）の場合は30日。' + GUARANTEE_COND + '</p></div>'
       + '</div>';
     box.hidden = false;
-    document.getElementById('detail-close').addEventListener('click', function () {
+    listen(document.getElementById('detail-close'), 'click', function () {
       var back = detailSlot; detailSlot = null; update();
       var b = document.querySelector('button.more[data-detail="' + back + '"]'); if (b) b.focus();
     });
-    document.getElementById('criteria').addEventListener('toggle', function (e) { criteriaOpen = e.target.open; });
+    if (document.getElementById('criteria')) listen(document.getElementById('criteria'), 'toggle', function (e) { criteriaOpen = e.target.open; });
     var sc = document.getElementById('selfcheck');
-    sc.addEventListener('change', function () {
+    listen(sc, 'change', function () {
       var ns = { g: [], n: [] };
       sc.querySelectorAll('input').forEach(function (i) { ns[i.dataset.k][+i.dataset.i] = i.checked; });
       selfState[shownModel] = ns;
@@ -1088,7 +1150,16 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
   }
 
   // ---- 詳細表 ----
+  function tableEdge() {
+    var box = document.getElementById('table-scroll'), w = box && box.querySelector('.table-wrap'); if (!w) return;
+    box.classList.toggle('at-end', w.scrollLeft + w.clientWidth >= w.scrollWidth - 2);
+  }
+  if (document.getElementById('table-scroll')) {
+    listen(document.querySelector('#table-scroll .table-wrap'), 'scroll', tableEdge);
+    window.addEventListener('resize', tableEdge, LOPT);
+  }
   function renderTable(res) {
+    if (!document.getElementById('compare')) return;
     var showRes = answered(), r = res.r, rr = showRes ? r : L.decide(null, '未定', null), base = L.decide(null, '未定', null), sizeLabel = rr.sizeLabel, col = {};
     L.ORDER.forEach(function (s) { var c = rr.cards[s]; col[s] = { c: c, na: !c, rec: showRes && r.rec && L.slot(r.rec) === s, long: c && c.model === 'RL' }; });
     function cls(s) { return col[s].rec ? ' class="is-rec"' : (col[s].na ? ' class="is-unavailable"' : ''); }
@@ -1099,36 +1170,36 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
       return '<div class="dots" aria-hidden="true">' + ALL.map(function (a) { return '<span class="' + (have.indexOf(a[0]) >= 0 ? 'on' : '') + '">' + esc(a[1]) + '</span>'; }).join('') + '</div>';
     }
     var rows = [
-      ['寝心地（公式の説明）', function (s) {
-        if (s === 'R' && col.R.long) return 'かたすぎず、柔らかすぎない適度な反発 ' + PENDING('ロングにも当てはまるか確認中');
+      ['寝心地<span class="nb">（公式の説明）</span>', function (s) {
+        if (s === 'R' && col.R.long) return 'かたすぎず、柔らかすぎない適度な反発' + (LONG_OK ? '' : ' ' + PENDING('ロングにも当てはまるか確認中'));
         return { S: 'ふかふかで包み込まれる', R: 'かたすぎず、柔らかすぎない適度な反発', E: 'しっかりと支えながらもふんわり' }[s];
       }],
       ['構造', function (s) {
-        if (s === 'R' && col.R.long) return PENDING('通常品と同じ二層ポケットコイルか確認中');
-        return { S: 'ウレタン三層（TOP 25N／MID 120N／BTM 140N。硬さは設計値で両タイプ共通）。オリジナルは1〜3層目のウレタンが日本製、ハイブリッドは2・3層目を海外の提携工場で製造', R: '二層ポケットコイル', E: 'ミルキーコイル・11層' }[s];
+        if (s === 'R' && col.R.long) return LONG_OK ? '二層ポケットコイル' : PENDING('通常品と同じ二層ポケットコイルか確認中');
+        return { S: 'ウレタン三層（<span class="nb">TOP 25N</span>／<span class="nb">MID 120N</span>／<span class="nb">BTM 140N</span>。硬さは設計値で両タイプ共通）。オリジナルは<span class="nb">1〜3層目</span>のウレタンが日本製、ハイブリッドは<span class="nb">2・3層目</span>を海外の提携工場で製造', R: '二層ポケットコイル', E: 'ミルキーコイル・11層' }[s];
       }],
       ['厚さ', function (s) { var c = col[s].c || base.cards[s]; return D.dims[c.model][c.size_label][2] + 'cm'; }],
-      ['重さ（' + sizeLabel + '）', function (s) { var c = col[s].c; return c ? weightText(c.model, c) : dash; }],
+      ['重さ<span class="nb">（' + sizeLabel + '）</span>', function (s) { var c = col[s].c; return c ? weightText(c.model, c) : dash; }],
       ['カバー', function (s) { return CONTENT[s].cover ? '<span class="yes">' + ic('wash') + '取り外して洗える</span>' : '<span class="no">' + ic('nowash') + '外せない（乾いた布で拭く）</span>'; }],
-      ['製造国', { S: PENDING('確定後に記載'), R: '中国（日本企画）', E: '中国（日本企画）' }],
+      ['製造国', { S: ORIGIN_S, R: '中国（日本企画）', E: '中国（日本企画）' }],
       ['サイズ', function (s) {
-        if (s === 'S') return sizesText('S') + sizeDots('S');
-        if (s === 'R') return (col.R.long ? sizesText('RL') + '（長さ210cm）' : sizesText('R') + '（ロング：' + sizesText('RL') + 'の長さ210cm）') + sizeDots(col.R.long ? 'RL' : 'R');
-        return sizesText('E') + sizeDots('E');
+        if (s === 'S') return sizesHtml('S') + sizeDots('S');
+        if (s === 'R') return (col.R.long ? sizesHtml('RL') + '<span class="nb">（長さ210cm）</span>' : sizesHtml('R') + '（ロング：' + sizesHtml('RL') + 'の<span class="nb">長さ210cm</span>）') + sizeDots(col.R.long ? 'RL' : 'R');
+        return sizesHtml('E') + sizeDots('E');
       }],
-      ['価格（' + sizeLabel + '）', function (s) {
+      ['価格<span class="nb">（' + sizeLabel + '）</span>', function (s) {
         var c = col[s].c; if (!c) return dash;
-        return s === 'S' ? '<span class="big">' + yen(c.price) + '</span>（ハイブリッド）／' + yen(c.price_sub) + '（オリジナル）' : '<span class="big">' + yen(c.price) + '</span>';
+        return s === 'S' ? '<span class="big">' + yen(c.price) + '</span><span class="nb">（ハイブリッド）</span>／' + yen(c.price_sub) + '<span class="nb">（オリジナル）</span>' : '<span class="big">' + yen(c.price) + '</span>';
       }],
-      ['120日間返金保証', { S: '<strong>無料で付く</strong>。無金利分割決済（ジャックス）の場合は<strong>30日</strong>。' + GUARANTEE_COND_B, R: '<strong>無料で付く</strong>。無金利分割決済（ジャックス）の場合は<strong>30日</strong>。' + GUARANTEE_COND_B, E: '購入時の同時申込の<strong>有償オプション（＋' + FEE + '）</strong>。<strong>保証料は返金されない</strong>。無金利分割決済（ジャックス）の場合は<strong>30日</strong>。' + GUARANTEE_COND_B }],
-      ['保証込みの価格（' + sizeLabel + '）', function (s) {
+      ['120日間<span class="nb">返金保証</span>', { S: '<strong>無料で付く</strong>。無金利分割決済（ジャックス）の場合は<strong>30日</strong>。' + GUARANTEE_COND_B, R: '<strong>無料で付く</strong>。無金利分割決済（ジャックス）の場合は<strong>30日</strong>。' + GUARANTEE_COND_B, E: '購入時の同時申込の<strong>有償オプション（<span class="nb">＋' + FEE + '</span>）</strong>。<strong class="nb">保証料は返金されない</strong>。無金利分割決済（ジャックス）の場合は<strong>30日</strong>。' + GUARANTEE_COND_B }],
+      ['保証込みの価格<span class="nb">（' + sizeLabel + '）</span>', function (s) {
         var c = col[s].c; if (!c) return dash;
-        return s === 'S' ? yen(c.with_guarantee) + '（ハイブリッド）／' + yen(c.with_guarantee_sub) + '（オリジナル）' : yen(c.with_guarantee);
+        return s === 'S' ? yen(c.with_guarantee) + '<span class="nb">（ハイブリッド）</span>／' + yen(c.with_guarantee_sub) + '<span class="nb">（オリジナル）</span>' : yen(c.with_guarantee);
       }],
       ['10年保証', { S: 'ウレタンフォームに3.0cm以上のへこみで交換等', R: 'マットレスに3.0cm以上のへこみで交換等', E: 'マットレスに3.0cm以上のへこみで交換等' }]
     ];
     var head = '<thead><tr><th scope="col">項目</th>' + L.ORDER.map(function (s) {
-      var note = col[s].na ? '<span class="colnote">このサイズはありません</span>' : (col[s].rec ? '<span class="colnote">あなたの答えに近い寝心地' + (col[s].long ? ' ' + PENDING('ロングにも同じ寝心地の説明が当てはまるかは確認中') : '') + '</span>' : '');
+      var note = col[s].na ? '<span class="colnote">このサイズはありません</span>' : (col[s].rec ? '<span class="colnote">あなたの答えに近い寝心地' + (col[s].long && !LONG_OK ? ' ' + PENDING('ロングにも同じ寝心地の説明が当てはまるかは確認中') : '') + '</span>' : '');
       return '<th scope="col"' + cls(s) + '>' + NAMES[s] + note + '</th>';
     }).join('') + '</tr></thead>';
     var body = '<tbody>' + rows.map(function (row) {
@@ -1138,33 +1209,84 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
       }).join('') + '</tr>';
     }).join('') + '</tbody>';
     document.getElementById('compare').innerHTML = '<caption class="sr-only">3つのマットレスの比較</caption>' + head + body;
+    tableEdge();
   }
 
   // ---- 結果（読み上げ領域は見出しと注記だけ。変わらなければ書き換えない）----
   var lastStatus = null;
   function renderResult(res) {
     var status = document.getElementById('result-status'), controls = document.getElementById('result-controls'), html;
+    if (!status) return;
     if (!answered()) { html = '<p>3つの質問に答えると、カードと詳細表に反映されます。</p>'; controls.hidden = true; }
     else {
       var r = res.r, title;
-      if (r.kind === '推薦') title = 'あなたの答えに近い寝心地のモデル：' + L.NAME[r.rec];
-      else if (r.kind === 'サイズ') title = '選んだサイズで選べるモデルを表示しています';
-      else title = '寝心地の説明と仕様で比べてください';
-      html = '<h3>' + esc(title) + (r.rec === 'RL' ? ' ' + PENDING('ロングにも同じ寝心地の説明が当てはまるかは確認中') : '') + '</h3>' + (r.notes.length ? '<ul class="notes">' + r.notes.map(function (n) { return '<li>' + esc(n.text) + '</li>'; }).join('') + '</ul>' : '');
+      if (r.kind === '推薦') title = esc('あなたの答えに近い寝心地のモデル：') + '<span class="nw">' + esc(L.NAME[r.rec]) + '</span>';
+      else if (r.kind === 'サイズ') title = esc('選んだサイズで選べるモデルを表示しています');
+      else title = esc('寝心地の説明と仕様で比べてください');
+      html = '<h3>' + title + (r.rec === 'RL' && !LONG_OK ? ' ' + PENDING('ロングにも同じ寝心地の説明が当てはまるかは確認中') : '') + '</h3>' + (r.notes.length ? '<ul class="notes">' + r.notes.map(function (n) { return '<li>' + esc(n.text) + '</li>'; }).join('') + '</ul>' : '');
       controls.hidden = false;
+      // 商品ページへのリンク：推薦はそのモデル、それ以外は選んだサイズで選べるモデルを並べる
+      var targets = r.rec ? [r.rec] : r.buy;
+      var buyHtml = targets.map(function (m) {
+        var c = r.cards[L.slot(m)];
+        return '<a href="' + c.url + '"' + LINK_ATTR + ' data-model="' + m + '" data-rec="' + (m === r.rec ? '1' : '0') + '" data-place="result">' + esc(L.NAME[m]) + 'の<span class="nw">商品ページを見る</span><small>' + yen(c.price) + '（' + esc(r.sizeLabel) + '）</small></a>';
+      }).join('');
+      var buyBox = document.getElementById('result-buy');
+      if (buyBox.innerHTML !== buyHtml) buyBox.innerHTML = buyHtml;
       document.getElementById('to-guarantee').textContent = r.rec === 'E' ? '返金保証（エントリーは購入時の有償オプション・＋' + FEE + '。条件あり）' : '合わなかったときの返金保証（条件あり）';
     }
     if (html !== lastStatus) { status.innerHTML = html; lastStatus = html; }
   }
 
   // なめらかに移動し、動かなかったとき（画面が裏にある、など）は直接移動する。動きを減らす設定なら最初から直接
+  // 画面の上端に固定・追従している要素（テーマのヘッダーなど）の下端。無ければ0（モックには無い）
+  function coverBottom() {
+    var b = 0;
+    (document.elementsFromPoint ? document.elementsFromPoint(window.innerWidth / 2, 2) : []).forEach(function (e) {
+      for (var n = e; n && n !== document.body && n !== document.documentElement; n = n.parentElement) {
+        var pos = getComputedStyle(n).position;
+        if (pos === 'fixed' || pos === 'sticky') { var r = n.getBoundingClientRect(); if (r.top <= 2 && r.bottom > b && r.bottom < window.innerHeight / 2) b = r.bottom; break; }
+      }
+    });
+    return b;
+  }
   function scrollToEl(el) {
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    el.scrollIntoView({ behavior: reduce ? 'instant' : 'smooth', block: 'start' });
-    setTimeout(function () { var top = el.getBoundingClientRect().top; if (top < -4 || top > window.innerHeight * 0.5) el.scrollIntoView({ behavior: 'instant', block: 'start' }); }, 700);
+    var cover = coverBottom();
+    if (cover) window.scrollTo({ top: el.getBoundingClientRect().top + window.pageYOffset - cover - 16, behavior: reduce ? 'instant' : 'smooth' });
+    else el.scrollIntoView({ behavior: reduce ? 'instant' : 'smooth', block: 'start' });
+    afterScroll(function () {
+      var top = el.getBoundingClientRect().top; if (top < -4 || top > window.innerHeight * 0.5) el.scrollIntoView({ behavior: 'instant', block: 'start' }); // 動かなかったとき（画面が裏にある、など）
+      var c = coverBottom(); top = el.getBoundingClientRect().top; // 動かしたあとに固定のヘッダーが出てきて隠れたら、その分だけ戻す
+      if (c && top < c + 8) window.scrollBy(0, top - c - 16);
+    });
   }
+  // なめらかな移動が止まるのを待つ（0.1秒ごとに見て、2回続けて動いていなければ止まったとみなす。長い移動でも途中で直さない。最長2.5秒）
+  function afterScroll(fn) {
+    var last = null, still = 0, n = 0;
+    var t = setInterval(function () {
+      var y = window.pageYOffset; still = y === last ? still + 1 : 0; last = y;
+      if (still >= 2 || ++n >= 25) { clearInterval(t); fn(); }
+    }, 100);
+  }
+  // スマホで閉じている詳細表・よくある質問を開く（PCではいつも開いているので、計測は送らない）
+  var SP_MQ = window.matchMedia ? window.matchMedia('(max-width: 699px)') : null;
+  function setSec(sec, open) {
+    var b = sec.querySelector('button.sp-toggle'); sec.classList.toggle('is-open', open);
+    if (b) { b.setAttribute('aria-expanded', String(open)); b.textContent = open ? b.dataset.close : b.dataset.open; }
+    if (open && sec.querySelector('#table-scroll')) tableEdge(); // 閉じていた間は表の幅が測れないので、開いたら右端の影を測り直す
+  }
+  function openSec(sec, trigger) {
+    if (sec.classList.contains('is-open')) return;
+    setSec(sec, true);
+    if (SP_MQ && SP_MQ.matches) track('selector_section_open', { target: sec.querySelector('button.sp-toggle').dataset.toggle, trigger: trigger });
+  }
+  document.querySelectorAll('button.sp-toggle').forEach(function (b) {
+    listen(b, 'click', function () { var sec = b.closest('.collapsible'); if (sec.classList.contains('is-open')) setSec(sec, false); else openSec(sec, 'user'); });
+  });
   function goToAnchor(id) {
     var el = document.getElementById(id); if (!el) return;
+    var sec = el.closest('.collapsible'); if (sec) openSec(sec, 'link'); // 閉じている所へのリンクなら、開いてから移る
     if (el.tagName === 'DETAILS' && !el.open) { el.dataset.openedBy = 'link'; el.open = true; } // ページ内リンクで開いたことを、開封の計測で分ける
     scrollToEl(el);
     var focusEl = el.tagName === 'DETAILS' ? el.querySelector('summary') : el;
@@ -1181,7 +1303,8 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
     if (sentKeys[key]) return; sentKeys[key] = true;
     track('selector_result', Object.assign({ result_kind: res.r.kind, recommended_model: res.r.rec || 'none' }, trackAnswers()));
   }
-  document.getElementById('jump').addEventListener('click', function () {
+  var FORM = document.getElementById('selector-form');
+  if (FORM) listen(document.getElementById('jump'), 'click', function () {
     var res = current(), r = res.r;
     var target = r.rec ? document.getElementById('art-' + L.slot(r.rec)) : document.getElementById('cards-heading');
     scrollToEl(target);
@@ -1189,7 +1312,7 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
     track('selector_jump', Object.assign({ target: r.jump, result_kind: r.kind, recommended_model: r.rec || 'none' }, trackAnswers()));
     sendResult(true);
   });
-  document.getElementById('reset').addEventListener('click', function () {
+  if (FORM) listen(document.getElementById('reset'), 'click', function () {
     document.querySelectorAll('#selector-form input').forEach(function (i) { i.checked = false; });
     state = { q1: undefined, q2: undefined, q3: undefined };
     Object.keys(answerTimers).forEach(function (k) { clearTimeout(answerTimers[k]); }); clearTimeout(resultTimer); // 送る前の回答・結果は取り消す
@@ -1200,7 +1323,7 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
 
   function update() { var res = current(); renderListCards(res); renderTable(res); renderResult(res); renderDetail(); }
 
-  document.getElementById('selector-form').addEventListener('change', function (e) {
+  if (FORM) listen(FORM, 'change', function (e) {
     var t = e.target; if (t.type !== 'radio') return;
     state[t.name] = t.value;
     clearTimeout(answerTimers[t.name]); // 矢印キーで通っただけの選択肢は送らない（問ごとに0.6秒止まった値だけ）
@@ -1216,11 +1339,12 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
     document.querySelectorAll('#selector-form input:checked').forEach(function (i) { state[i.name] = i.value; });
     update();
   }
-  window.addEventListener('pageshow', syncFromForm);
+  window.addEventListener('pageshow', syncFromForm, LOPT);
+  STOPS.push(function () { [answerTimers, scTimers].forEach(function (T) { Object.keys(T).forEach(function (k) { clearTimeout(T[k]); }); }); clearTimeout(resultTimer); });
 
   // カードのボタン・詳しく見る・ページ内リンク・Q&Aの開封
   document.addEventListener('click', function (e) {
-    var a = e.target.closest && e.target.closest('.card a[data-model]');
+    var a = e.target.closest && e.target.closest('.card a[data-model], #result-buy a[data-model]');
     if (a) { var res = current(); track('selector_card_click', Object.assign({ model: a.dataset.model, is_recommended: a.dataset.rec === '1', place: a.dataset.place || 'list', answered: answered(), result_kind: answered() ? res.r.kind : 'unanswered' }, trackAnswers())); }
     var more = e.target.closest && e.target.closest('button.more[data-detail]');
     if (more) {
@@ -1235,11 +1359,15 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
       return;
     }
     var an = e.target.closest && e.target.closest('a[data-anchor], a[data-goto]');
-    if (an) { e.preventDefault(); show(an.dataset.goto || 'list', an.dataset.anchor); }
-  });
-  document.getElementById('to-guarantee').addEventListener('click', function (e) { e.preventDefault(); goToAnchor('qa-return'); });
+    if (an) {
+      if (MOCK) { e.preventDefault(); show(an.dataset.goto || 'list', an.dataset.anchor); return; }
+      // Shopify：同じページにある箇所へは移動し、無ければ（TOPから一覧へ）普通にページを移る
+      if (an.dataset.anchor && document.getElementById(an.dataset.anchor)) { e.preventDefault(); goToAnchor(an.dataset.anchor); }
+    }
+  }, LOPT);
+  if (document.getElementById('to-guarantee')) listen(document.getElementById('to-guarantee'), 'click', function (e) { e.preventDefault(); goToAnchor('qa-return'); });
   document.querySelectorAll('.qa details').forEach(function (d) {
-    d.addEventListener('toggle', function () { if (d.open) track('selector_qa_open', { qa: d.dataset.qa, trigger: d.dataset.openedBy || 'user' }); delete d.dataset.openedBy; });
+    listen(d, 'toggle', function () { if (d.open) track('selector_qa_open', { qa: d.dataset.qa, trigger: d.dataset.openedBy || 'user' }); delete d.dataset.openedBy; });
   });
 
   // カードが画面に入って1秒以上見えたか（カード群の30%以上、または画面の半分以上が見えている状態が1秒続いたら1回）
@@ -1250,7 +1378,7 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
   }
   if ('IntersectionObserver' in window) {
     var seen = {}, polls = {}, since = {};
-    document.addEventListener('visibilitychange', function () { since = {}; });
+    document.addEventListener('visibilitychange', function () { since = {}; }, LOPT);
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         var el = en.target, id = el.id;
@@ -1265,8 +1393,8 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
         } else if (!en.isIntersecting && polls[id]) { clearInterval(polls[id]); polls[id] = null; }
       });
     });
-    io.observe(document.getElementById('list-cards'));
-    io.observe(document.getElementById('top-cards'));
+    ['list-cards', 'top-cards'].forEach(function (id) { if (document.getElementById(id)) io.observe(document.getElementById(id)); });
+    STOPS.push(function () { io.disconnect(); Object.keys(polls).forEach(function (k) { clearInterval(polls[k]); }); });
   }
 
   // ---- 表示の切り替え（TOP／一覧。モックだけの仕組み）----
@@ -1279,12 +1407,16 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
     if (anchor) setTimeout(function () { goToAnchor(anchor); }, 30);
     else { window.scrollTo(0, 0); document.getElementById(isTop ? 'top-heading' : 'cards-heading').focus({ preventScroll: true }); }
   }
-  document.getElementById('btn-top').addEventListener('click', function () { show('top'); });
-  document.getElementById('btn-list').addEventListener('click', function () { show('list'); });
+  if (MOCK) {
+    document.getElementById('btn-top').addEventListener('click', function () { show('top'); });
+    document.getElementById('btn-list').addEventListener('click', function () { show('list'); });
+  }
 
   renderTopCards();
   syncFromForm();
-  if (location.hash === '#top') show('top');
+  if (MOCK && location.hash === '#top') show('top');
+  // Shopify：TOPのリンク（一覧#selector など）で来たら、描画のあとにその箇所へ移る
+  if (!MOCK && location.hash && /^#[A-Za-z][\w-]*$/.test(location.hash) && document.getElementById(location.hash.slice(1))) setTimeout(function () { goToAnchor(location.hash.slice(1)); }, 60);
 })();
 </script>
 </body>
