@@ -6559,15 +6559,16 @@ div:has( > svg[id="effectiveAppsScrollToTopBtn"])::before {
         var d = ds[key], on = sel.indexOf(key) >= 0;
         return '<div class="wrow' + (on ? ' on' : '') + '"><span class="wl">' + esc(key.replace('ロング', '')) + '</span><span class="wb"><span style="width:' + (d[0] / 180 * 100).toFixed(1) + '%"></span></span><span class="wv">' + d[0] + 'cm' + (on ? '<span class="tagsel">選択中</span>' : (anySel ? '<span class="tagph" aria-hidden="true">選択中</span>' : '')) + '</span></div>';
       }).join('');
+      var no = 0; function NUM() { return '<span class="num" aria-hidden="true">' + (++no) + '</span>'; } // 出す項目の順に番号（購入者の声が無いときも飛ばない）
       box.innerHTML = '<div class="detail-head"><h3 id="detail-title" tabindex="-1">' + esc(name) + 'を詳しく見る</h3><button type="button" id="detail-close" aria-label="' + esc(name) + 'の詳しい情報を閉じる">閉じる</button></div>'
         + (unavailable ? '<p class="na-note">選んだサイズ（' + esc(Q2TEXT[res.q2]) + '）は、このモデルにありません。</p>' : '')
         + '<div class="dgrid">'
-        + '<div class="dblock wide"><h4><span class="num" aria-hidden="true">1</span>つくり</h4><div class="diagram">' + diagram(s, true) + '</div>'
+        + '<div class="dblock wide"><h4>' + NUM() + 'つくり</h4><div class="diagram">' + diagram(s, true) + '</div>'
         + '<p class="dnote">寝心地（公式の説明' + (isLong ? '。通常のリッチコイル' : '') + '）：「' + cont.feelQ + '」</p></div>'
-        + '<div class="dblock wide"><h4><span class="num" aria-hidden="true">2</span>自分に当てはまるかを確かめる</h4>'
+        + '<div class="dblock wide"><h4>' + NUM() + '自分に当てはまるかを確かめる</h4>'
         + '<p class="dnote" style="margin:0 0 8px">当てはまるものを押してください。サイズと長さは、3問のQ2で選ぶと、選べるかどうかがカードと下の「サイズと幅」に出ます。</p>'
         + '<div class="selfcheck" id="selfcheck">' + checks + '</div><p class="scresult" id="scresult" aria-live="polite">' + esc(selfText(gN, nN, follow(st))) + '</p></div>'
-        + (SHOW_VOICES ? '<div class="dblock wide"><h4><span class="num" aria-hidden="true">3</span>購入者の声（寝心地に触れた口コミ）</h4>'
+        + (SHOW_VOICES ? '<div class="dblock wide"><h4>' + NUM() + '購入者の声（寝心地に触れた口コミ）</h4>'
         + '<p class="disclose">公式サイトの購入確認済みの口コミのうち、下の基準に合うものから、新しい順に当社が選び、寝心地に触れた1文を抜き出して載せています（★3以下の口コミも基準どおりに含めます）。</p>'
         + (voiceNote ? '<p class="disclose">' + voiceNote + '</p>' : '')
         + (lowNote ? '<p class="disclose">' + lowNote + '</p>' : '')
@@ -6575,9 +6576,9 @@ div:has( > svg[id="effectiveAppsScrollToTopBtn"])::before {
         + '<details class="criteria" id="criteria"' + (criteriaOpen ? ' open' : '') + '><summary>抜き出しの基準</summary><ul>' + D.quotes.criteria.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></details>'
         + '<p class="dnote">※個人の感想です。</p>'
         + '</div>' : '')
-        + '<div class="dblock"><h4><span class="num" aria-hidden="true">4</span>サイズと幅（棒は寸法どおりの比率）</h4><div class="wbars">' + bars + '</div>'
+        + '<div class="dblock"><h4>' + NUM() + 'サイズと幅（棒は寸法どおりの比率）</h4><div class="wbars">' + bars + '</div>'
         + '<p class="dnote">どのサイズも長さ' + ds[keys[0]][1] + 'cm・厚さ' + ds[keys[0]][2] + 'cm。' + (anySel ? '「選択中」が、Q2で選んだサイズです。' : '') + '</p></div>'
-        + '<div class="dblock"><h4><span class="num" aria-hidden="true">5</span>自宅で試す流れ（条件あり）</h4><div class="flow">'
+        + '<div class="dblock"><h4>' + NUM() + '自宅で試す流れ（条件あり）</h4><div class="flow">'
         + '<div>' + ic('truck') + '到着</div><div>' + ic('bed') + '所定の<span class="nw">最低利用期間</span></div><div>' + ic('calendar') + '120日以内に申請</div><div>' + ic('refund') + '回収は無料・<span class="nw">本体価格を返金</span></div></div>'
         + '<p class="dnote flownote">' + (s === 'E' ? 'エントリーは、購入時に有償オプション（<span class="nb">＋' + FEE + '</span>）を付けた場合だけです。' : '') + '無金利分割決済（ジャックス）の場合は30日。' + GUARANTEE_COND + '</p></div>'
         + '</div>';
