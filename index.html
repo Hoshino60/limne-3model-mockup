@@ -91,7 +91,6 @@ h2[tabindex], h3[tabindex] { scroll-margin-top: 16px; }
 .dgexp dd { margin: 0; }
 @media (min-width: 700px) { .dblock.wide .selfcheck { grid-template-columns: 1fr 1fr; align-items: start; } }
 .dgcrop img { display: block; max-width: none; height: auto; }
-.dgpending { min-height: 220px; border-style: dashed; color: var(--muted); font-size: 14px; background: var(--na-bg); }
 .card .catch { font-size: 16px; font-weight: 600; margin: 10px 0 0; }
 .card .feel { display: inline-block; font-size: 13px; background: var(--panel); padding: 4px 12px; border-radius: 10px; margin-top: 6px; line-height: 1.5; }
 .card .feel .fl { display: block; font-size: 11px; color: var(--muted); } /* 「公式の説明」は小さな1行目（3枚とも同じ形に） */
@@ -296,7 +295,7 @@ table.compare { border-collapse: separate; border-spacing: 0; width: 100%; font-
 
       <section class="section" aria-labelledby="cards-heading">
         <h2 id="cards-heading" tabindex="-1">3つのマットレスの選び方</h2>
-        <p class="lead">寝心地のつくりと、お手入れ・サイズ・価格を見比べてください。「詳しく見る」で、購入者の声と、自分に当てはまるかを確かめられます。</p>
+        <p class="lead">寝心地のつくりと、お手入れ・サイズ・価格を見比べてください。「詳しく見る」で、つくりと、自分に当てはまるかを確かめられます。</p>
         <p class="tolist"><a href="https://limne.jp/collections/mattress#l3m-products" data-anchor="l3m-products">商品一覧へ移動する</a></p>
         <div class="cards" id="list-cards"></div>
         <section class="detail" id="detail" aria-labelledby="detail-title" hidden></section>
@@ -347,8 +346,8 @@ table.compare { border-collapse: separate; border-spacing: 0; width: 100%; font-
           </div>
         </div>
         <div class="table-note" id="guarantee-note" tabindex="-1">
-          <p>返金保証の条件：返品時の回収は無料です。返金はマットレス本体の価格だけで、保証オプション料と不要マットレス引き取りサービス料（37,000円）は返金されません。無金利分割決済<span class="nb">（株式会社ジャックス）</span>の場合は保証期間が30日で、返品の前に引き取りサービス料などを銀行振込でお支払いいただきます。搬出の経路の都合で指定業者が回収できない場合は、返金保証をご利用いただけません。引き取り日の4日前を過ぎたキャンセルには6,000円がかかります。ご利用は1回限りで、所定の最低利用期間（<mark class="pending">◯日</mark>）があります。対象となる購入先：<mark class="pending">◯◯</mark>。詳しくは <a href="https://limne.jp/pages/shopping_guide" target="_blank" rel="noopener">https://limne.jp/pages/shopping_guide</a>。</p>
-          <p>価格は<mark class="pending">2026年◯月◯日</mark>時点の税込価格です。</p>
+          <p>返金保証の条件：返品時の回収は無料です。返金はマットレス本体の価格だけで、保証オプション料と不要マットレス引き取りサービス料（37,000円）は返金されません。無金利分割決済<span class="nb">（株式会社ジャックス）</span>の場合は保証期間が30日です。返品対象外の商品を同時に購入した場合や、不要マットレス引き取りのオプション代金などは、返品の前に銀行振込でのお支払いになります。設置環境や建物の構造などにより、指定の回収業者が安全に搬出できない場合は、返金保証をご利用いただけない場合があります。引き取り日の4日前を過ぎたキャンセルには6,000円がかかります。公式サイトでご購入いただいた方に限り、1度だけご利用できます。お申し込みの前に所定の最低利用期間があります。詳しくは <a href="https://limne.jp/pages/shopping_guide" target="_blank" rel="noopener">https://limne.jp/pages/shopping_guide</a>。</p>
+          <p>価格は税込です。</p>
         </div>
         <p class="morelinks"><a href="https://limne.jp/pages/limne-recovery-mattress" target="_blank" rel="noopener">構造の違いを詳しく見る</a></p>
         </div>
@@ -364,31 +363,19 @@ table.compare { border-collapse: separate; border-spacing: 0; width: 100%; font-
         </details>
         <details data-qa="smell">
           <summary>開けたときのにおいが気になります<span class="mk" aria-hidden="true"></span></summary>
-          <p>スフエアーモデルは、ウレタンフォーム特有のにおいがする場合があります。気になるときは、風通しの良いところにしばらく置いてください。</p>
+          <p>どのモデルもウレタンフォームを使っているため（スフエアーは本体、リッチコイルとエントリーは詰物）、開けたときにウレタンフォーム特有のにおいがする場合があります。気になるときは、風通しの良いところにしばらく置いてください。</p>
         </details>
         <details id="qa-return" data-qa="return">
           <summary>合わなかったらどうなりますか<span class="mk" aria-hidden="true"></span></summary>
           <ul>
             <li>スフエアーモデル・リッチコイルモデル（ロングを含む）：120日間の返金保証が無料で付きます（無金利分割決済〈ジャックス〉の場合は30日）。</li>
             <li>エントリーモデル：購入時に有償オプション（<span class="nb">＋10,000円</span>）を同時に申し込んだ場合が対象です。期間は120日間（無金利分割決済〈ジャックス〉の場合は30日）。保証料は返金されません。</li>
-            <li>無金利分割決済（株式会社ジャックス）の場合は、どのモデルも保証期間が30日で、返品の前に引き取りサービス料などを銀行振込でお支払いいただきます。</li>
+            <li>無金利分割決済（株式会社ジャックス）の場合は、どのモデルも保証期間が30日です。返品対象外の商品を同時に購入した場合や、不要マットレス引き取りのオプション代金などは、返品の前に銀行振込でのお支払いになります。</li>
             <li>返品時の回収は無料です。返金はマットレス本体の価格だけで、保証オプション料と不要マットレス引き取りサービス料（37,000円）は返金されません。</li>
-            <li>搬出の経路の都合で指定業者が回収できない場合は、返金保証をご利用いただけません。引き取り日の4日前を過ぎたキャンセルには6,000円がかかります。</li>
-            <li>ご利用は1回限りで、所定の最低利用期間（<mark class="pending">◯日</mark>）があります。対象となる購入先：<mark class="pending">◯◯</mark>。</li>
+            <li>設置環境や建物の構造などにより、指定の回収業者が安全に搬出できない場合は、返金保証をご利用いただけない場合があります。引き取り日の4日前を過ぎたキャンセルには6,000円がかかります。</li>
+            <li>公式サイトでご購入いただいた方に限り、1度だけご利用できます。お申し込みの前に所定の最低利用期間があります。</li>
           </ul>
           <p>詳しくは <a href="https://limne.jp/pages/shopping_guide" target="_blank" rel="noopener">https://limne.jp/pages/shopping_guide</a>。</p>
-        </details>
-        <details data-qa="origin">
-          <summary>どれが日本製ですか<span class="mk" aria-hidden="true"></span></summary>
-          <p>スフエアーの製造国は<mark class="pending">確定後に記載</mark>（オリジナルは1〜3層目のウレタンが日本製、ハイブリッドは2・3層目を海外の提携工場で製造）。リッチコイルとエントリーは日本で企画し、中国で製造しています。</p>
-        </details>
-        <details data-qa="type">
-          <summary>ハイブリッドとオリジナルの違いは？<span class="mk" aria-hidden="true"></span></summary>
-          <p>2・3層目の製造場所と価格が違います。硬さの設計値（TOP 25N／MID 120N／BTM 140N）は両タイプ共通としています。</p>
-        </details>
-        <details data-qa="body">
-          <summary>体重や寝姿勢で選ばなくていいですか<span class="mk" aria-hidden="true"></span></summary>
-          <p>体格や寝姿勢で合うモデルを分ける根拠は、まだ十分にありません。寝心地の説明と仕様を手がかりにして、迷ったら店舗で寝比べてください。</p>
         </details>
         <details data-qa="two">
           <summary>2人で1枚を使えますか<span class="mk" aria-hidden="true"></span></summary>
@@ -797,20 +784,14 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
   function listen(el, type, fn) { el.addEventListener(type, fn, LOPT); } // 受け口はすべてこれで付ける（作り直しのときにまとめて外れる）
 
   // ---- 小さな部品 ----
-  var PENDING = function (t) { return '<mark class="pending">' + t + '</mark>'; };
   var MOCK = !!document.getElementById('btn-top'); // モックだけにある「TOPの表示／一覧の表示」の切り替え
   var LIST_URL = CFG.listUrl || 'https://limne.jp/collections/mattress'; // TOPから移る一覧ページ（Shopifyでは /collections/mattress）
   var LINK_ATTR = CFG.newTab === false ? '' : ' target="_blank" rel="noopener"'; // 商品ページを新しいタブで開くか
-  var ORIGIN_S = CFG.originS ? esc(CFG.originS) : PENDING('確定後に記載');
-  var MIN_DAYS = String(CFG.minDays || '').trim().replace(/日$/, '') ? esc(String(CFG.minDays).trim().replace(/日$/, '')) + '日' : PENDING('◯日');
-  var LONG_OK = !!CFG.longConfirmed; // ロングの構造・寝心地の説明を確認できたら確認中の印を消す
-  function LONG_PENDING(t) { return LONG_OK ? '' : PENDING(t); }
-  // 重さの確定値（Shopifyの設定から。例 { E: { 'シングル': '16' } }）。入っていれば商品ページ本文の値を置き換え、エントリーの「確定後に記載」も外す
-  var W_OK = {};
+  // 重さの確定値（Shopifyの設定から。例 { R: { 'セミダブル': '23' } }）。入っていれば商品ページ本文の値を置き換える
   Object.keys(CFG.weights || {}).forEach(function (m) {
     Object.keys(CFG.weights[m] || {}).forEach(function (sz) {
       var v = String(CFG.weights[m][sz] || '').trim().replace(/kg$/i, '');
-      if (/^\d+(\.\d+)?$/.test(v) && D.weight[m] && sz in D.weight[m]) { D.weight[m][sz] = v; (W_OK[m] = W_OK[m] || {})[sz] = true; }
+      if (/^\d+(\.\d+)?$/.test(v) && D.weight[m] && sz in D.weight[m]) D.weight[m][sz] = v;
     });
   });
   var SHOW_VOICES = CFG.showVoices !== false && !!D.quotes; // 購入者の声（法務の確認が済むまで Shopify では既定で出さず、データもページに入れない）
@@ -818,7 +799,7 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
   function sizesText(m) { return D.sizes[m].map(function (x) { return x.replace(/ロング$/, ''); }).join('・'); }
   function sizesHtml(m) { return D.sizes[m].map(function (x) { return '<span class="nb">' + esc(x.replace(/ロング$/, '')) + '</span>'; }).join('・'); } // 詳細表用（サイズ名の途中で折り返さない）
   function nbFee(h) { return h.split('＋' + FEE).join('<span class="nb">＋' + FEE + '</span>'); } // 「＋」と保証料の金額を割らない（esc のあとに使う）
-  function H(html) { return { html: html }; } // 文言の中に黄色の確定待ちを入れるとき
+  function H(html) { return { html: html }; } // 組み立て済みのHTMLをそのまま入れるとき
   function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function yen(n) { return L.yen(n) + '円〜'; }
   function photoSrc(m) { return D.photo[m]; }
@@ -863,13 +844,11 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
       alt: 'エントリーの分解図（公式）。1〜11の番号の付いた11層で、7層目がミルキーコイル',
       short: '7層目にミルキーコイルを入れた11層構造',
       title: '11層構造', lead: '7層目にミルキーコイルを入れた11層構造です。寝心地の設計は「コイルの弾力で寝姿勢を保つ」。',
-      items: [['7層目', 'ミルキーコイル'], ['1〜6層目・8〜11層目', 'ミルキーコイルの上下の層']] },
-    RL: { alt: 'リッチコイル ロングの図。ロングの構造は確認中' }
+      items: [['7層目', 'ミルキーコイル'], ['1〜6層目・8〜11層目', 'ミルキーコイルの上下の層']] }
   };
   // big：詳しく見る（図を大きくし、横に構造の説明を置く）。カードでは図の下に1行の説明
-  function diagram(slot, isLong, big) {
-    var key = isLong && !LONG_OK ? 'RL' : slot, d = DG[key], fig;
-    if (key === 'RL') return '<div class="dgframe dgpending" role="img" aria-label="' + esc(d.alt) + '"><span>ロングの構造は確認中</span></div>';
+  function diagram(slot, big) { // ロングも通常のリッチコイルと同じ図
+    var d = DG[slot], fig;
     var c = d.crop, m = d.mask; // 切り抜き：枠の縦横比を切り抜く範囲に合わせ、画像を左上へずらす（% は枠の幅に対する割合）
     fig = '<div class="dgframe"><span class="dgcrop" style="aspect-ratio:' + c[2] + '/' + c[3] + ';--ar:' + (c[2] / c[3]).toFixed(4) + '"><img src="' + esc(d.src) + '" alt="' + esc(d.alt) + '" style="width:' + (d.W / c[2] * 100).toFixed(2) + '%;margin-left:' + (-c[0] / c[2] * 100).toFixed(2) + '%;margin-top:' + (-c[1] / c[2] * 100).toFixed(2) + '%">'
       + (m ? '<span class="dgmask" aria-hidden="true" style="left:' + ((m[0] - c[0]) / c[2] * 100).toFixed(2) + '%;top:' + ((m[1] - c[1]) / c[3] * 100).toFixed(2) + '%;width:' + (m[2] / c[2] * 100).toFixed(2) + '%;height:' + (m[3] / c[3] * 100).toFixed(2) + '%"></span>' : '')
@@ -886,7 +865,6 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
   var CONTENT = {
     S: {
       name: 'スフエアーモデル', spec: 'ウレタン三層・厚さ22cm',
-      origin: '製造国：' + ORIGIN_S + '（オリジナルは1〜3層目のウレタンが日本製、ハイブリッドは2・3層目を海外の提携工場で製造）',
       catch: 'やわらかい表層で受け止める、三層ウレタン。', feel: '<span class="fl">公式の説明</span><span class="nw">「ふかふかで包み込まれる」</span>', feelQ: 'ふかふかで包み込まれる',
       design: '柔らかく受け止めて、沈みすぎない',
       good: ['「ふかふかで包み込まれる」寝心地が好きな方', 'カバーを外して洗いたい方', 'コイルを使わないウレタンだけの構造で、立て掛けて陰干ししたい方'],
@@ -899,27 +877,24 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
           ['ウレタン特有のにおいが気になる', 'においがする場合があります。風通しの良いところにしばらく置いてください。']] }; },
       cover: true, guarantee: '返金保証：120日間（無金利分割決済〈ジャックス〉の場合は30日）。無料で付きます。',
       button: 'スフエアーモデルを見る',
-      top: { good: '「ふかふかで包み込まれる」寝心地が好きな方', ng: 'トップ層はやわらかめです（公式の説明）', origin: 'ウレタン三層・22cm／製造国は' + ORIGIN_S, priceNote: 'シングル・ハイブリッド' }
+      top: { good: '「ふかふかで包み込まれる」寝心地が好きな方', ng: 'トップ層はやわらかめです（公式の説明）', origin: 'ウレタン三層・22cm', priceNote: 'シングル・ハイブリッド' }
     },
     R: {
       name: 'リッチコイルモデル', spec: '二層ポケットコイル・厚さ25cm', origin: '製造国：中国（日本企画）',
       catch: '適度な反発の、二層ポケットコイル。', feel: '<span class="fl">公式の説明</span><span class="nw">「かたすぎず、柔らかすぎない適度な反発力」</span>', feelQ: 'かたすぎず、柔らかすぎない適度な反発力',
       design: '上層で受け止め、下層で沈み込みすぎを防ぐ',
-      good: ['「かたすぎず、柔らかすぎない適度な反発」が好きな方', 'コイルの押し返し（反発）がある寝心地が好きな方', '長さ210cmが必要な方（ロングモデル：シングル〜ダブル）'],
-      ng: function (c, pend) { return ['カバーを外して洗いたい方（カバーは外せません。乾いた布で拭きます）',
-        '一人で動かしたい方（' + c.size_label + '約' + c.weight + 'kg）']; },
-      check: function (c, isLong) {
-        var p = isLong ? ' ' + LONG_PENDING('ロングにも当てはまるか確認中') : '';
+      good: ['「かたすぎず、柔らかすぎない適度な反発」が好きな方', '長さ210cmが必要な方（ロングモデル：シングル〜ダブル）'],
+      ng: function () { return ['カバーを外して洗いたい方（カバーは外せません。乾いた布で拭きます）']; },
+      check: function () {
         return {
-          good: [H(esc('「かたすぎず、柔らかすぎない適度な反発」が好き') + p), H(esc('コイルの押し返し（反発）がある寝心地が好き') + p)],
-          ng: [['カバーを外して洗いたい', 'カバーは外せません（乾いた布で拭きます）。'],
-            ['一人で動かしたい', '重さは' + c.size_label + 'で約' + c.weight + 'kgです。']] }; },
+          good: ['「かたすぎず、柔らかすぎない適度な反発」が好き'],
+          ng: [['カバーを外して洗いたい', 'カバーは外せません（乾いた布で拭きます）。']] }; },
       cover: false, guarantee: '返金保証：120日間（無金利分割決済〈ジャックス〉の場合は30日）。無料で付きます。',
       button: 'リッチコイルモデルを見る',
       long: {
-        name: 'リッチコイル ロングモデル', spec: LONG_OK ? '二層ポケットコイル・厚さ25cm・長さ210cm' : '厚さ25cm・長さ210cm ' + PENDING('構造が通常品と同じ二層ポケットコイルか確認中'),
-        catch: '長さ210cmの、リッチコイル ロング。', feel: '<span class="fl">公式の説明</span><span class="nw">「かたすぎず、柔らかすぎない適度な反発力」</span>' + LONG_PENDING('ロングにも当てはまるか確認中'),
-        good: [H(esc('長さ210cmが必要な方（' + sizesText('RL') + '）')), LONG_OK ? '「かたすぎず、柔らかすぎない適度な反発」が好きな方' : H(PENDING('寝心地の説明（適度な反発）がロングにも当てはまるか確認中'))],
+        name: 'リッチコイル ロングモデル', spec: '二層ポケットコイル・厚さ25cm・長さ210cm',
+        catch: '長さ210cmの、リッチコイル ロング。', feel: '<span class="fl">公式の説明</span><span class="nw">「かたすぎず、柔らかすぎない適度な反発力」</span>',
+        good: [H(esc('長さ210cmが必要な方（' + sizesText('RL') + '）')), '「かたすぎず、柔らかすぎない適度な反発」が好きな方'],
         button: 'リッチコイル ロングモデルを見る'
       },
       top: { good: '「かたすぎず、柔らかすぎない適度な反発」が好きな方', ng: 'カバーは外せません', origin: '二層ポケットコイル・25cm／中国製（日本企画）', priceNote: 'シングル' }
@@ -939,16 +914,7 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
       top: { good: '価格を抑えて、はじめてのマットレスを用意したい方', ng: '返金保証は購入時の有償オプション（＋' + FEE + '）です', origin: 'ミルキーコイル・11層・22cm／中国製（日本企画）', cond: true, priceNote: 'シングル' }
     }
   };
-  // 商品ページの本文と画像で重さが違うもの（確定まで黄色）
-  var WEIGHT_PENDING = {
-    R: { 'セミダブル': '本文23kg・画像23.5kg', 'ダブル': '本文27kg・画像27.5kg', 'クイーン': '本文32kg・画像31.5kg', 'キング': '本文36kg・画像35.5kg' },
-    E: { 'シングル': '本文15kg・画像16kg', 'セミダブル': '本文19kg・画像20kg', 'ダブル': '本文23kg・画像27.5kg' }
-  };
-  function weightText(m, c) {
-    var p = WEIGHT_PENDING[m] && WEIGHT_PENDING[m][c.size_label];
-    if (m === 'E' && !(W_OK.E && W_OK.E[c.size_label])) return PENDING('確定後に記載');
-    return '約' + c.weight + 'kg';
-  }
+  function weightText(m, c) { return m === 'E' ? '' : '約' + c.weight + 'kg'; } // エントリーの重さは出さない（商品ページの本文と画像で値が違うため）
   function items(list, icon) { return list.map(function (t) { return '<li>' + ic(icon) + '<span>' + (typeof t === 'string' ? esc(t) : t.html) + '</span></li>'; }).join(''); }
 
   // ---- 計測（モックでは画面下のログにも出す）。毎回すべてのキーを入れて前の値を持ち越さない ----
@@ -1020,28 +986,27 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
       var c = (showRes && r.cards[s]) || base.cards[s], isLong = c.model === 'RL', src = isLong ? cont.long : cont;
       var isRec = showRes && r.rec && L.slot(r.rec) === s;
       var flags = '';
-      if (isRec) flags += '<span class="flag rec">あなたの答えに近い寝心地のモデル</span>' + (isLong && !LONG_OK ? ' ' + PENDING('ロングにも同じ寝心地の説明が当てはまるかは確認中') : '');
+      if (isRec) flags += '<span class="flag rec">あなたの答えに近い寝心地のモデル</span>';
       if (unavailable) flags += '<span class="flag na">このサイズはありません</span>';
       if (showRes && r.tags[s]) flags += r.tags[s].map(function (t) { return '<span class="flag ftag">' + esc(t) + '</span>'; }).join('');
-      var pend = (WEIGHT_PENDING[c.model] || {})[c.size_label];
       var btnLabel = esc(src.button);
       var btn = unavailable
         ? '<div class="buy"><p class="buy-off">' + btnLabel + '（このサイズでは購入できません）</p></div>'
         : '<div class="buy"><a href="' + c.url + '"' + LINK_ATTR + ' data-model="' + c.model + '" data-rec="' + (isRec ? '1' : '0') + '">' + btnLabel + '</a></div>';
-      var weight = '<p class="sub">重さ（' + esc(sizeLabel) + '）：' + weightText(c.model, c) + '</p>';
+      var wt = weightText(c.model, c), weight = wt ? '<p class="sub">重さ（' + esc(sizeLabel) + '）：' + wt + '</p>' : '';
       var open = detailSlot === s;
       return '<article class="card' + (isRec ? ' is-rec' : '') + (unavailable ? ' is-unavailable' : '') + '" id="art-' + s + '" aria-labelledby="card-' + s + '" aria-describedby="flags-' + s + '">'
         + '<div class="photo"><img src="' + esc(photoSrc(c.model)) + '" alt="' + esc(src.name + 'の商品写真') + '" width="800" height="500"></div>'
-        + '<div><h3 id="card-' + s + '" tabindex="-1" aria-describedby="flags-' + s + '">' + esc(src.name) + '</h3><p class="spec">' + (isLong ? cont.long.spec : esc(cont.spec)) + '<br>' + cont.origin + '</p></div>'
+        + '<div><h3 id="card-' + s + '" tabindex="-1" aria-describedby="flags-' + s + '">' + esc(src.name) + '</h3><p class="spec">' + (isLong ? cont.long.spec : esc(cont.spec)) + (cont.origin ? '<br>' + cont.origin : '') + '</p></div>'
         + '<div class="flags" id="flags-' + s + '">' + flags + '</div>'
-        + '<div class="diagram">' + diagram(s, isLong) + '</div>'
+        + '<div class="diagram">' + diagram(s) + '</div>'
         + '<div><p class="catch">' + esc(src.catch) + '</p><span class="feel">' + src.feel + '</span></div>'
         + chips(s, c)
         + '<div class="sec good"><h4>向いている方</h4><ul>' + items(src.good, 'check') + '</ul></div>'
-        + '<div class="sec ng"><h4>合わないことがある方</h4><ul>' + items(cont.ng(c, pend), 'alert') + '</ul></div>'
+        + '<div class="sec ng"><h4>合わないことがある方</h4><ul>' + items(cont.ng(c), 'alert') + '</ul></div>'
         + '<div class="pricebox">' + (unavailable ? '' : priceLines(s, c, sizeLabel) + weight) + '</div>'
         + '<p class="guarantee">' + nbFee(esc(cont.guarantee)) + GUARANTEE_COND + '</p>'
-        + '<div class="btnrow">' + btn + '</div><div class="morerow"><button type="button" class="more" data-detail="' + s + '" aria-controls="detail" aria-expanded="' + open + '" aria-label="' + esc(src.name) + 'の詳しい情報（購入者の声・当てはまるか）">詳しく見る（購入者の声・当てはまるか）</button></div>'
+        + '<div class="btnrow">' + btn + '</div><div class="morerow"><button type="button" class="more" data-detail="' + s + '" aria-controls="detail" aria-expanded="' + open + '" aria-label="' + esc(src.name) + 'の詳しい情報（つくり・当てはまるか）">詳しく見る（つくり・当てはまるか）</button></div>'
         + '</article>';
     }).join('');
   }
@@ -1055,7 +1020,7 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
       return '<article class="card summary" aria-labelledby="top-card-' + s + '">'
         + '<div class="photo"><img src="' + esc(photoSrc(s)) + '" alt="' + esc(cont.name + 'の商品写真') + '" width="800" height="500"></div>'
         + '<div><h3 id="top-card-' + s + '">' + esc(cont.name) + '</h3><p class="spec">' + cont.top.origin + '</p></div>'
-        + '<div class="diagram">' + diagram(s, false) + '</div>'
+        + '<div class="diagram">' + diagram(s) + '</div>'
         + '<div><p class="catch">' + esc(cont.catch) + '</p><span class="feel">' + cont.feel + '</span></div>'
         + '<div class="sec"><p class="lbl">向いている方</p><p>' + esc(cont.top.good) + '</p><p class="lbl">合わないことがある方</p><p>' + nbFee(esc(cont.top.ng))
         + (cont.top.cond ? '。条件あり（返金は本体価格のみ・1回限り・最低利用期間あり）。<a href="' + LIST_URL + '#guarantee-note" data-goto="list" data-anchor="guarantee-note">条件を見る</a>' : '') + '</p></div>'
@@ -1111,8 +1076,8 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
     box.innerHTML = '<div class="detail-head"><h3 id="detail-title" tabindex="-1">' + esc(name) + 'を詳しく見る</h3><button type="button" id="detail-close" aria-label="' + esc(name) + 'の詳しい情報を閉じる">閉じる</button></div>'
       + (unavailable ? '<p class="na-note">選んだサイズ（' + esc(Q2TEXT[res.q2]) + '）は、このモデルにありません。</p>' : '')
       + '<div class="dgrid">'
-      + '<div class="dblock wide"><h4><span class="num" aria-hidden="true">1</span>' + (isLong && !LONG_OK ? 'つくり（ロングの構造は確認中）' : 'つくり') + '</h4><div class="diagram">' + diagram(s, isLong, true) + '</div>'
-      + '<p class="dnote">寝心地（公式の説明' + (isLong ? '。通常のリッチコイル' : '') + '）：「' + cont.feelQ + '」' + (isLong ? LONG_PENDING('ロングにも当てはまるか確認中') : '') + '</p></div>'
+      + '<div class="dblock wide"><h4><span class="num" aria-hidden="true">1</span>つくり</h4><div class="diagram">' + diagram(s, true) + '</div>'
+      + '<p class="dnote">寝心地（公式の説明' + (isLong ? '。通常のリッチコイル' : '') + '）：「' + cont.feelQ + '」</p></div>'
       + '<div class="dblock wide"><h4><span class="num" aria-hidden="true">2</span>自分に当てはまるかを確かめる</h4>'
       + '<p class="dnote" style="margin:0 0 8px">当てはまるものを押してください。サイズと長さは、3問のQ2で選ぶと、選べるかどうかがカードと下の「サイズと幅」に出ます。</p>'
       + '<div class="selfcheck" id="selfcheck">' + checks + '</div><p class="scresult" id="scresult" aria-live="polite">' + esc(selfText(gN, nN, follow(st))) + '</p></div>'
@@ -1127,7 +1092,7 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
       + '<div class="dblock"><h4><span class="num" aria-hidden="true">4</span>サイズと幅（棒は寸法どおりの比率）</h4><div class="wbars">' + bars + '</div>'
       + '<p class="dnote">どのサイズも長さ' + ds[keys[0]][1] + 'cm・厚さ' + ds[keys[0]][2] + 'cm。' + (anySel ? '「選択中」が、Q2で選んだサイズです。' : '') + '</p></div>'
       + '<div class="dblock"><h4><span class="num" aria-hidden="true">5</span>自宅で試す流れ（条件あり）</h4><div class="flow">'
-      + '<div>' + ic('truck') + '到着</div><div>' + ic('bed') + '最低利用期間<span class="nw">（' + MIN_DAYS + '）</span></div><div>' + ic('calendar') + '120日以内に申請</div><div>' + ic('refund') + '回収は無料・<span class="nw">本体価格を返金</span></div></div>'
+      + '<div>' + ic('truck') + '到着</div><div>' + ic('bed') + '所定の<span class="nw">最低利用期間</span></div><div>' + ic('calendar') + '120日以内に申請</div><div>' + ic('refund') + '回収は無料・<span class="nw">本体価格を返金</span></div></div>'
       + '<p class="dnote flownote">' + (s === 'E' ? 'エントリーは、購入時に有償オプション（<span class="nb">＋' + FEE + '</span>）を付けた場合だけです。' : '') + '無金利分割決済（ジャックス）の場合は30日。' + GUARANTEE_COND + '</p></div>'
       + '</div>';
     box.hidden = false;
@@ -1171,17 +1136,17 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
     }
     var rows = [
       ['寝心地<span class="nb">（公式の説明）</span>', function (s) {
-        if (s === 'R' && col.R.long) return 'かたすぎず、柔らかすぎない適度な反発' + (LONG_OK ? '' : ' ' + PENDING('ロングにも当てはまるか確認中'));
+        if (s === 'R' && col.R.long) return 'かたすぎず、柔らかすぎない適度な反発';
         return { S: 'ふかふかで包み込まれる', R: 'かたすぎず、柔らかすぎない適度な反発', E: 'しっかりと支えながらもふんわり' }[s];
       }],
       ['構造', function (s) {
-        if (s === 'R' && col.R.long) return LONG_OK ? '二層ポケットコイル' : PENDING('通常品と同じ二層ポケットコイルか確認中');
-        return { S: 'ウレタン三層（<span class="nb">TOP 25N</span>／<span class="nb">MID 120N</span>／<span class="nb">BTM 140N</span>。硬さは設計値で両タイプ共通）。オリジナルは<span class="nb">1〜3層目</span>のウレタンが日本製、ハイブリッドは<span class="nb">2・3層目</span>を海外の提携工場で製造', R: '二層ポケットコイル', E: 'ミルキーコイル・11層' }[s];
+        if (s === 'R' && col.R.long) return '二層ポケットコイル';
+        return { S: 'ウレタン三層（<span class="nb">TOP 25N</span>／<span class="nb">MID 120N</span>／<span class="nb">BTM 140N</span>。硬さは設計値で両タイプ共通）', R: '二層ポケットコイル', E: 'ミルキーコイル・11層' }[s];
       }],
       ['厚さ', function (s) { var c = col[s].c || base.cards[s]; return D.dims[c.model][c.size_label][2] + 'cm'; }],
-      ['重さ<span class="nb">（' + sizeLabel + '）</span>', function (s) { var c = col[s].c; return c ? weightText(c.model, c) : dash; }],
+      ['重さ<span class="nb">（' + sizeLabel + '）</span>', function (s) { var c = col[s].c; return c && weightText(c.model, c) || dash; }],
       ['カバー', function (s) { return CONTENT[s].cover ? '<span class="yes">' + ic('wash') + '取り外して洗える</span>' : '<span class="no">' + ic('nowash') + '外せない（乾いた布で拭く）</span>'; }],
-      ['製造国', { S: ORIGIN_S, R: '中国（日本企画）', E: '中国（日本企画）' }],
+      ['製造国', { S: dash, R: '中国（日本企画）', E: '中国（日本企画）' }],
       ['サイズ', function (s) {
         if (s === 'S') return sizesHtml('S') + sizeDots('S');
         if (s === 'R') return (col.R.long ? sizesHtml('RL') + '<span class="nb">（長さ210cm）</span>' : sizesHtml('R') + '（ロング：' + sizesHtml('RL') + 'の<span class="nb">長さ210cm</span>）') + sizeDots(col.R.long ? 'RL' : 'R');
@@ -1199,7 +1164,7 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
       ['10年保証', { S: 'ウレタンフォームに3.0cm以上のへこみで交換等', R: 'マットレスに3.0cm以上のへこみで交換等', E: 'マットレスに3.0cm以上のへこみで交換等' }]
     ];
     var head = '<thead><tr><th scope="col">項目</th>' + L.ORDER.map(function (s) {
-      var note = col[s].na ? '<span class="colnote">このサイズはありません</span>' : (col[s].rec ? '<span class="colnote">あなたの答えに近い寝心地' + (col[s].long && !LONG_OK ? ' ' + PENDING('ロングにも同じ寝心地の説明が当てはまるかは確認中') : '') + '</span>' : '');
+      var note = col[s].na ? '<span class="colnote">このサイズはありません</span>' : (col[s].rec ? '<span class="colnote">あなたの答えに近い寝心地</span>' : '');
       return '<th scope="col"' + cls(s) + '>' + NAMES[s] + note + '</th>';
     }).join('') + '</tr></thead>';
     var body = '<tbody>' + rows.map(function (row) {
@@ -1223,7 +1188,7 @@ if (typeof module !== 'undefined') module.exports = SelectorLogic;
       if (r.kind === '推薦') title = esc('あなたの答えに近い寝心地のモデル：') + '<span class="nw">' + esc(L.NAME[r.rec]) + '</span>';
       else if (r.kind === 'サイズ') title = esc('選んだサイズで選べるモデルを表示しています');
       else title = esc('寝心地の説明と仕様で比べてください');
-      html = '<h3>' + title + (r.rec === 'RL' && !LONG_OK ? ' ' + PENDING('ロングにも同じ寝心地の説明が当てはまるかは確認中') : '') + '</h3>' + (r.notes.length ? '<ul class="notes">' + r.notes.map(function (n) { return '<li>' + esc(n.text) + '</li>'; }).join('') + '</ul>' : '');
+      html = '<h3>' + title + '</h3>' + (r.notes.length ? '<ul class="notes">' + r.notes.map(function (n) { return '<li>' + esc(n.text) + '</li>'; }).join('') + '</ul>' : '');
       controls.hidden = false;
       // 商品ページへのリンク：推薦はそのモデル、それ以外は選んだサイズで選べるモデルを並べる
       var targets = r.rec ? [r.rec] : r.buy;
